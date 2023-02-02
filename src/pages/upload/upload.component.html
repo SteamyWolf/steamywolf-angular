@@ -41,6 +41,29 @@
       </div>
       <img class="selected-file" *ngIf="selectedFile" [src]="selectedFile" />
     </div>
+
+    <div class="tags-container">
+      <p>Adding tags will help your post appear in search queries</p>
+      <mat-form-field class="tags-list" appearance="outline">
+        <mat-label>Tags</mat-label>
+        <mat-chip-list #chipList aria-label="tags selection">
+          <mat-chip *ngFor="let tag of tags" (removed)="remove(tag)">
+            {{ tag }}
+            <button matChipRemove>
+              <mat-icon>cancel</mat-icon>
+            </button>
+          </mat-chip>
+          <input
+            placeholder="New tag..."
+            [matChipInputFor]="chipList"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            [matChipInputAddOnBlur]="addOnBlur"
+            (matChipInputTokenEnd)="add($event)"
+          />
+        </mat-chip-list>
+      </mat-form-field>
+    </div>
+
     <div class="acceptance-criteria">
       <p><b>Accepted Formats:</b> jpg, jpeg, png, gif</p>
       <p><b>Max File Size:</b> 10 MB</p>

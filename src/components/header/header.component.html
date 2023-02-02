@@ -25,9 +25,14 @@
           <a routerLink="/account">Account</a>
         </button>
       </li>
-      <li>
+      <li *ngIf="!loggedIn">
         <button class="link" color="primary" mat-button>
           <a routerLink="/login">Login</a>
+        </button>
+      </li>
+      <li *ngIf="loggedIn">
+        <button class="link" color="primary" mat-button>
+          <a (click)="logout()">Logout</a>
         </button>
       </li>
     </ul>

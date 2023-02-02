@@ -5,6 +5,7 @@ import { AccountComponent } from 'src/pages/account/account.component';
 import { HomeComponent } from 'src/pages/home/home.component';
 import { PostComponent } from 'src/pages/post/post.component';
 import { UploadComponent } from 'src/pages/upload/upload.component';
+import { AuthGuard } from 'src/services/auth-guard.service';
 
 const routes: Routes = [
   {
@@ -14,6 +15,7 @@ const routes: Routes = [
   {
     path: 'upload',
     component: UploadComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: 'login',

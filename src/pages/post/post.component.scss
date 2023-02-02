@@ -16,6 +16,18 @@
   width: 350px;
   background-color: $primary;
   box-shadow: 4px 4px 5px $light-primary;
+  padding: 10px;
+  margin-left: 15px;
+
+  .chips-container {
+    h3 {
+      color: $secondary;
+    }
+    ::ng-deep .mat-chip {
+      // background-color: $dark-secondary;
+      color: $secondary;
+    }
+  }
 }
 
 .image-information-container {

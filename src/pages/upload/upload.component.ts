@@ -1,7 +1,9 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component } from '@angular/core';
+import { MatChipInputEvent } from '@angular/material/chips';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/services/auth.service';
+import { COMMA, ENTER } from '@angular/cdk/keycodes';
 
 @Component({
   selector: 'app-upload',
@@ -13,6 +15,9 @@ export class UploadComponent {
   title: string = '';
   description: string = '';
   loading: boolean = false;
+  tags: string[] = [];
+  readonly separatorKeysCodes = [ENTER, COMMA] as const;
+  addOnBlur: boolean = true;
 
   constructor(
     private authService: AuthService,
@@ -20,10 +25,35 @@ export class UploadComponent {
     private router: Router
   ) {}
 
+  add(event: MatChipInputEvent): void {
+    const value = (event.value || '').trim();
+
+    // Add our tag
+    if (value) {
+      this.tags.push(value);
+    }
+
+    // Clear the input value
+    event.chipInput!.clear();
+  }
+
+  remove(tag: string): void {
+    const index = this.tags.indexOf(tag);
+
+    if (index >= 0) {
+      this.tags.splice(index, 1);
+    }
+  }
+
   upload() {
     this.loading = true;
     this.authService
-      .upload(this.selectedFile, this.title, this.description)
+      .upload(
+        this.selectedFile,
+        this.title.trim(),
+        this.description.trim(),
+        this.tags
+      )
       .subscribe(
         (data: any) => {
           this.loading = false;

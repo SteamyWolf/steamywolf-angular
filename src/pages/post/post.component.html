@@ -3,7 +3,15 @@
     <div class="image-container">
       <img [src]="post?.image" />
     </div>
-    <div class="side-bar"></div>
+
+    <div class="side-bar">
+      <div class="chips-container">
+        <h3>Tags:</h3>
+        <mat-chip-list aria-label="Fish selection">
+          <mat-chip *ngFor="let tag of post.tags">{{ tag }}</mat-chip>
+        </mat-chip-list>
+      </div>
+    </div>
   </div>
 
   <div class="image-information-container">

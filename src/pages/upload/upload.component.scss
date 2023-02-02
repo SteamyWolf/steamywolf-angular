@@ -96,3 +96,23 @@ mat-form-field {
   text-align: center;
   color: green;
 }
+
+.tags-container {
+  padding-top: 38px;
+  p {
+    color: $secondary;
+  }
+  .tags-list {
+    width: 500px;
+    ::ng-deep .mat-standard-chip .mat-chip-remove,
+    .mat-standard-chip .mat-chip-trailing-icon {
+      margin-right: 8px;
+    }
+
+    ::ng-deep .mat-standard-chip .mat-chip-remove,
+    .mat-standard-chip .mat-chip-trailing-icon {
+      width: 16px;
+      height: 24px;
+    }
+  }
+}

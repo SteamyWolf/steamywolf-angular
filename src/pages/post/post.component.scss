@@ -1,0 +1,107 @@
+@import "src/styles.scss";
+
+.image-side-bar-container {
+  display: flex;
+}
+
+.image-container {
+  width: 100%;
+  text-align: center;
+  img {
+    max-width: 100%;
+  }
+}
+
+.side-bar {
+  width: 350px;
+  background-color: $primary;
+  box-shadow: 4px 4px 5px $light-primary;
+}
+
+.image-information-container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.info-container {
+  color: $secondary;
+}
+
+.description {
+  margin-top: 15px;
+  border: 4px solid $dark-secondary;
+  min-height: 100px;
+  color: $secondary;
+  padding: 10px;
+  border-radius: 2px;
+}
+
+.add-comment-section {
+  display: flex;
+  justify-content: center;
+  .mat-form-field {
+    width: 600px;
+    color: $secondary;
+    margin-top: 20px;
+  }
+
+  ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+    color: $secondary !important;
+  }
+
+  ::ng-deep
+    .mat-form-field-appearance-outline.mat-focused
+    .mat-form-field-outline-thick {
+    color: $dark-secondary !important;
+  }
+}
+
+.add-comment {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+}
+
+.comments-header-title {
+  color: $light-primary;
+}
+
+.comment {
+  border: 2px solid $dark-secondary;
+}
+
+.comments-section {
+  display: grid;
+  gap: 15px;
+}
+
+.comment-information-container {
+  display: flex;
+  gap: 15px;
+  border: 2px solid $dark-secondary;
+  padding: 10px;
+  position: relative;
+  .comment-createdAt {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    color: $secondary;
+  }
+}
+
+.username-comment-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  .username {
+    color: $secondary;
+    &:hover {
+      color: $dark-secondary;
+      cursor: pointer;
+    }
+  }
+  .user-comment {
+    color: $secondary;
+  }
+}

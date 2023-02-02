@@ -1,1 +1,94 @@
 /* You can add global styles to this file, and also import other style files */
+
+// COLORS
+$primary: #2b7379;
+$light-primary: #6bbab5;
+$secondary: #fae3d6;
+$dark-secondary: #d5ada6;
+$white: #ffffff;
+
+* {
+  font-family: "Ubuntu", sans-serif;
+}
+
+html,
+body {
+  height: 100%;
+  background-color: $primary;
+  background-image: url("assets/body_grad.gif");
+  background-repeat: repeat-x;
+  background-size: 2.43rem;
+}
+body {
+  margin: 0;
+}
+
+@import "~@angular/material/theming";
+$custom-typography: mat-typography-config(
+  $font-family: "Ubuntu",
+);
+@include mat-core($custom-typography);
+
+mat-icon {
+  font-family: "Material Icons" !important;
+  font-weight: normal !important;
+  font-style: normal !important;
+  font-size: 24px !important; /* Preferred icon size */
+  display: inline-block !important;
+  line-height: 1 !important;
+  text-transform: none !important;
+  letter-spacing: normal !important;
+  word-wrap: normal !important;
+  white-space: nowrap !important;
+  direction: ltr !important;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased !important;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility !important;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale !important;
+
+  /* Support for IE. */
+  font-feature-settings: "liga" !important;
+}
+
+.mat-button,
+.mat-raised-button {
+  color: $secondary;
+  &:hover {
+    color: $dark-secondary;
+  }
+}
+
+.body-container {
+  padding: 2vw;
+}
+
+// BREAKPOINTS
+$viewport-x-small: (
+  max-width: 480px,
+);
+$viewport-small: 767px;
+$viewport-medium-up: 768px;
+$viewport-medium-max: 1024px;
+$viewport-medium-up: 768px; //min-width
+$viewport-large: (
+  min-width: 1024px,
+);
+$viewport-x-large: (
+  min-width: 1200px,
+);
+$viewport-wide-screen: (
+  min-width: 2000px,
+);
+
+.error-snack {
+  background-color: crimson;
+  color: $white;
+}
+.successful-snack {
+  background-color: green;
+  color: $white;
+}

@@ -1,0 +1,43 @@
+@import "../../styles.scss";
+
+.hamburger-icon {
+  @media screen and (min-width: $viewport-small) {
+    display: none;
+  }
+}
+
+.title {
+  color: $light-primary;
+}
+
+.image-title-container {
+  cursor: pointer;
+}
+
+.image-container {
+  position: relative;
+  height: 400px;
+  width: 400px;
+}
+
+.gallery-container {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  gap: 20px;
+
+  & figure {
+    margin: 0;
+    height: 440px;
+  }
+
+  & img {
+    height: 400px;
+  }
+
+  & p {
+    margin: 0;
+    text-align: center;
+    color: $secondary;
+  }
+}

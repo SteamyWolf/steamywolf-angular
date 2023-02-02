@@ -1,0 +1,35 @@
+<header class="header-container">
+  <div class="title-container" (click)="navigateHome()">
+    <h1 class="main-title">SteamyWolf</h1>
+    <h2 class="sub-header">Furry Art</h2>
+  </div>
+  <div class="links-container">
+    <ul class="links-list">
+      <li>
+        <button class="link" color="primary" mat-button>
+          <a>Browse</a>
+        </button>
+      </li>
+      <li>
+        <button class="link" color="primary" mat-button>
+          <a routerLink="/upload">Upload</a>
+        </button>
+      </li>
+      <li>
+        <button class="link" color="primary" mat-button>
+          <a>About</a>
+        </button>
+      </li>
+      <li>
+        <button class="link" color="primary" mat-button>
+          <a routerLink="/account">Account</a>
+        </button>
+      </li>
+      <li>
+        <button class="link" color="primary" mat-button>
+          <a routerLink="/login">Login</a>
+        </button>
+      </li>
+    </ul>
+  </div>
+</header>

@@ -1,0 +1,36 @@
+@import "src/styles.scss";
+
+.form {
+  //   margin-top: 2vw;
+}
+
+.login-title {
+  text-align: center;
+  color: $secondary;
+  margin: 0;
+}
+
+.form-fields-container {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+  margin: 0 auto;
+  border: 1px solid black;
+  padding: 20px;
+  background-color: $primary;
+  font-size: 17px;
+  border-radius: 3px;
+}
+
+.mat-form-field {
+  color: $secondary;
+}
+
+.mat-raised-button {
+  background-color: $light-primary;
+  width: 50%;
+  margin: 0 auto;
+  &:hover {
+    background-color: gray;
+  }
+}

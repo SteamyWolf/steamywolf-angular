@@ -1,0 +1,71 @@
+<div class="upload-container">
+  <h1 class="upload-title">Create New Post</h1>
+  <form class="form">
+    <mat-form-field appearance="outline">
+      <mat-label>Post Title</mat-label>
+      <input
+        type="text"
+        matInput
+        [(ngModel)]="title"
+        minlength="2"
+        maxlength="200"
+        name="title"
+        required
+      />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Description</mat-label>
+      <textarea
+        matInput
+        rows="5"
+        [(ngModel)]="description"
+        name="description"
+      ></textarea>
+    </mat-form-field>
+    <div class="drop-image-container">
+      <div
+        class="drag-and-drop-container"
+        [ngClass]="{ 'file-added': selectedFile }"
+        appDnd
+        (fileDropped)="fileDropped($event)"
+      >
+        <input
+          type="file"
+          (change)="fileAdded($event)"
+          #fileDropRef
+          id="fileDropRef"
+        />
+        <h3>Drag and drop a file here</h3>
+        <h3>or</h3>
+        <button mat-raised-button>Browse Files</button>
+      </div>
+      <img class="selected-file" *ngIf="selectedFile" [src]="selectedFile" />
+    </div>
+    <div class="acceptance-criteria">
+      <p><b>Accepted Formats:</b> jpg, jpeg, png, gif</p>
+      <p><b>Max File Size:</b> 10 MB</p>
+      <p>
+        You should be able to see your post on the home page shortly after
+        uploading
+      </p>
+    </div>
+  </form>
+  <button
+    class="upload-button"
+    (click)="upload()"
+    mat-raised-button
+    type="button"
+    [disabled]="
+      !selectedFile ||
+      !title ||
+      title.length < 3 ||
+      title.length > 200 ||
+      loading
+    "
+  >
+    <span *ngIf="loading" class="loading-spinner"
+      ><mat-spinner diameter="30"></mat-spinner
+    ></span>
+    <span *ngIf="!loading">Upload</span>
+  </button>
+</div>

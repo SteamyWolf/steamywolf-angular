@@ -1,0 +1,55 @@
+<div class="post-container">
+  <div class="image-side-bar-container">
+    <div class="image-container">
+      <img [src]="post?.image" />
+    </div>
+    <div class="side-bar"></div>
+  </div>
+
+  <div class="image-information-container">
+    <img [src]="user?.thumbnail" />
+    <div class="info-container">
+      <h1>{{ post?.title }}</h1>
+      <p>
+        By <b>{{ user?.username }}</b
+        >, posted {{ post.updatedAt | date }}
+      </p>
+    </div>
+  </div>
+  <div class="description">
+    <p>{{ post?.description }}</p>
+  </div>
+  <div class="add-comment-section">
+    <div class="add-comment">
+      <mat-form-field appearance="outline">
+        <mat-label>Add Comment</mat-label>
+        <textarea
+          matInput
+          rows="7"
+          placeholder="Add comment here."
+          [(ngModel)]="comment"
+          type="text"
+        ></textarea>
+      </mat-form-field>
+      <button mat-raised-button type="button" (click)="submitComment()">
+        Submit Comment
+      </button>
+    </div>
+  </div>
+  <div class="comments-section">
+    <h1 class="comments-header-title">Comments</h1>
+    <div
+      class="comment-information-container"
+      *ngFor="let comment of post.comments"
+    >
+      <p class="comment-createdAt">
+        <i> commented on {{ comment.comment.createdAt | date }} </i>
+      </p>
+      <img class="user-thumbnail" [src]="comment.user.thumbnail" />
+      <div class="username-comment-container">
+        <h2 class="username">{{ comment.user.username }}</h2>
+        <p class="user-comment">{{ comment.comment.text }}</p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,52 @@
+@import "src/styles.scss";
+
+.header-container {
+  padding: 2vw;
+  background-image: url("../../assets/wolficon.png");
+  background-repeat: no-repeat;
+  background-size: 155px;
+  background-position: 210px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.title-container {
+  cursor: pointer;
+}
+
+.main-title {
+  color: $secondary;
+  font-size: 30px;
+  margin: 0;
+}
+
+.sub-header {
+  color: $secondary;
+  margin: 0;
+  padding-left: 23px;
+  letter-spacing: 4px;
+}
+
+.links-container {
+}
+
+.links-list {
+  list-style: none;
+  display: flex;
+}
+
+.link {
+  font-size: 17px;
+}
+
+.icon {
+  color: white;
+}
+
+a[routerLink] {
+  color: $secondary;
+  text-decoration: none;
+  &:hover {
+    color: $dark-secondary;
+  }
+}

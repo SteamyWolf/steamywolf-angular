@@ -1,0 +1,58 @@
+<main class="home-container">
+  <h1 class="title">Recent Submissions</h1>
+  <div class="gallery-container">
+    <figure *ngFor="let recentSubmission of recentSubmissions">
+      <div
+        class="image-title-container"
+        (click)="postNavigate(recentSubmission.post.submissions.id)"
+      >
+        <div class="image-container">
+          <img
+            [ngSrc]="recentSubmission.post.submissions.image"
+            fill
+            height="400"
+            width="400"
+          />
+        </div>
+        <p class="image-title">{{ recentSubmission.post.submissions.title }}</p>
+      </div>
+      <p>
+        By
+        <a
+          ><i>{{ recentSubmission.user.username }}</i></a
+        >
+      </p>
+    </figure>
+
+    <!-- <figure>
+      <img src="assets/jeanwoof-furry-canine-furry-art-furry-4246792.gif" />
+      <p class="image-title">Random title for this image</p>
+      <p>By <i>Artist Username Here</i></p>
+    </figure>
+    <figure>
+      <img src="assets/tumblr_na6239zIWI1s28a14o1_1280.png" />
+      <p class="image-title">Random title for this image</p>
+      <p>By Artist Username Here</p>
+    </figure>
+    <figure>
+      <img src="assets/tumblr_pdricsUw181v4wo73o1_1280.png" />
+      <p class="image-title">Random title for this image</p>
+      <p>By Artist Username Here</p>
+    </figure>
+    <figure>
+      <img src="assets/tumblr_pjy6n9JIql1rwbumjo1_1280.png" />
+      <p class="image-title">Random title for this image</p>
+      <p>By Artist Username Here</p>
+    </figure>
+    <figure>
+      <img src="assets/tumblr_plg1dkpfcO1sgw9yxo1_1280.png" />
+      <p class="image-title">Random title for this image</p>
+      <p>By Artist Username Here</p>
+    </figure>
+    <figure>
+      <img src="assets/tumblr_pk7qvhHxLo1uxwflb_540.png" />
+      <p class="image-title">Random title for this image</p>
+      <p>By Artist Username Here</p>
+    </figure> -->
+  </div>
+</main>

@@ -1,26 +1,16 @@
 <div class="upload-container">
   <h1 class="upload-title">Create New Post</h1>
-  <form class="form">
+  <form class="form" [formGroup]="form">
     <mat-form-field appearance="outline">
       <mat-label>Post Title</mat-label>
-      <input
-        type="text"
-        matInput
-        [(ngModel)]="title"
-        minlength="2"
-        maxlength="200"
-        name="title"
-        required
-      />
+      <input type="text" matInput formControlName="title" />
+      <mat-error *ngIf="form.controls['title'].hasError('required')"
+        >Title is required</mat-error
+      >
     </mat-form-field>
     <mat-form-field appearance="outline">
       <mat-label>Description</mat-label>
-      <textarea
-        matInput
-        rows="5"
-        [(ngModel)]="description"
-        name="description"
-      ></textarea>
+      <textarea matInput rows="5" formControlName="description"></textarea>
     </mat-form-field>
     <div class="drop-image-container">
       <div
@@ -47,7 +37,10 @@
       <mat-form-field class="tags-list" appearance="outline">
         <mat-label>Tags</mat-label>
         <mat-chip-list #chipList aria-label="tags selection">
-          <mat-chip *ngFor="let tag of tags" (removed)="remove(tag)">
+          <mat-chip
+            *ngFor="let tag of form.controls['tags'].value"
+            (removed)="remove(tag)"
+          >
             {{ tag }}
             <button matChipRemove>
               <mat-icon>cancel</mat-icon>
@@ -60,6 +53,9 @@
             [matChipInputAddOnBlur]="addOnBlur"
             (matChipInputTokenEnd)="add($event)"
           />
+          <mat-error *ngIf="form.controls['tags'].hasError('maxlength')"
+            >Cannot have more than 20 tags</mat-error
+          >
         </mat-chip-list>
       </mat-form-field>
     </div>
@@ -78,13 +74,7 @@
     (click)="upload()"
     mat-raised-button
     type="button"
-    [disabled]="
-      !selectedFile ||
-      !title ||
-      title.length < 3 ||
-      title.length > 200 ||
-      loading
-    "
+    [disabled]="!selectedFile || form.invalid || loading"
   >
     <span *ngIf="loading" class="loading-spinner"
       ><mat-spinner diameter="30"></mat-spinner

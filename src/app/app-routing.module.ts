@@ -4,6 +4,7 @@ import { LoginComponent } from 'src/components/login/login.component';
 import { AccountComponent } from 'src/pages/account/account.component';
 import { HomeComponent } from 'src/pages/home/home.component';
 import { PostComponent } from 'src/pages/post/post.component';
+import { SignUpComponent } from 'src/pages/sign-up/sign-up.component';
 import { UploadComponent } from 'src/pages/upload/upload.component';
 import { AuthGuard } from 'src/services/auth-guard.service';
 
@@ -20,6 +21,10 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
+  },
+  {
+    path: 'signup',
+    component: SignUpComponent,
   },
   {
     path: 'post/:id',

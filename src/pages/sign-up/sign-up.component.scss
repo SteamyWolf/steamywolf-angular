@@ -31,23 +31,11 @@
   }
 }
 
-.password-field {
-  ::ng-deep .mat-form-field-wrapper {
-    padding-bottom: 0px;
-  }
-}
-
-.sign-up {
+.loading-spinner {
+  padding: 10px 0;
   text-align: center;
-  margin: 0;
-  color: $secondary;
-  padding: 13px 0;
-  a {
-    &:visited {
-      color: $light-primary;
-    }
-    &:hover {
-      color: $dark-secondary;
-    }
+  color: green;
+  .mat-spinner {
+    margin: 10px auto;
   }
 }

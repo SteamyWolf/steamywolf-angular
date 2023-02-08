@@ -1,0 +1,54 @@
+<form class="form" (ngSubmit)="submitForm()" [formGroup]="signupForm">
+  <div class="form-fields-container">
+    <h1 class="login-title">Sign Up</h1>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Email</mat-label>
+      <input type="text" matInput formControlName="email" />
+      <mat-error *ngIf="signupForm.controls['email'].hasError('email')"
+        >Must be a valid email</mat-error
+      >
+      <mat-error *ngIf="signupForm.controls['email'].hasError('required')"
+        >Email is required</mat-error
+      >
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Username</mat-label>
+      <input type="text" matInput formControlName="username" />
+    </mat-form-field>
+    <button
+      mat-raised-button
+      type="button"
+      (click)="checkUsernameAvailability(false)"
+    >
+      <span *ngIf="usernameLoading" class="loading-spinner"
+        ><mat-spinner diameter="30"></mat-spinner
+      ></span>
+      <span *ngIf="!usernameLoading">Check availability</span>
+    </button>
+    <mat-form-field appearance="outline">
+      <mat-label>Password</mat-label>
+      <input type="password" matInput formControlName="password" />
+    </mat-form-field>
+    <mat-form-field appearance="outline">
+      <mat-label>Confirm password</mat-label>
+      <input
+        type="password"
+        matInput
+        formControlName="confirmPassword"
+        [errorStateMatcher]="matcher"
+      />
+      <mat-error
+        *ngIf="
+          signupForm.hasError('notSame') &&
+          signupForm.controls['password'].touched
+        "
+        >Passwords do not match</mat-error
+      >
+    </mat-form-field>
+    <button mat-raised-button type="submit" [disabled]="signupForm.invalid">
+      Create Account
+    </button>
+  </div>
+</form>

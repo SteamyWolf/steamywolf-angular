@@ -32,13 +32,16 @@ export class AuthService {
       .toPromise();
   }
 
+  signupNewUser(user: { username: string; email: string; password: string }) {
+    return this.http.post('http://localhost:4000/api/user', user);
+  }
+
   upload(
     file: string | ArrayBuffer,
     title: string,
     description: string,
     tags: string[]
   ) {
-    // get rid of this or put it in another service
     return this.http.post(
       'http://localhost:4000/api/upload',
       { file: file, title: title, description: description, tags: tags },
@@ -63,5 +66,9 @@ export class AuthService {
       },
       { withCredentials: true }
     );
+  }
+
+  checkUsername(username: string) {
+    return this.http.get(`http://localhost:4000/api/auth/${username}`);
   }
 }

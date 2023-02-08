@@ -15,6 +15,7 @@ import { LoginComponent } from 'src/components/login/login.component';
 import { UploadComponent } from 'src/pages/upload/upload.component';
 import { DndDirective } from 'src/directives/dnd.directive';
 import { PostComponent } from 'src/pages/post/post.component';
+import { SignUpComponent } from 'src/pages/sign-up/sign-up.component';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
@@ -34,6 +35,7 @@ import { MatChipsModule } from '@angular/material/chips';
     UploadComponent,
     DndDirective,
     PostComponent,
+    SignUpComponent,
   ],
   imports: [
     BrowserModule,

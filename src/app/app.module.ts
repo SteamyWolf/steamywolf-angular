@@ -24,6 +24,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
+import { MatRadioModule } from '@angular/material/radio';
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import { MatChipsModule } from '@angular/material/chips';
     MatProgressSpinnerModule,
     NgOptimizedImage,
     MatChipsModule,
+    MatRadioModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

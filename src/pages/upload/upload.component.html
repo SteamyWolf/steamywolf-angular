@@ -32,6 +32,24 @@
       <img class="selected-file" *ngIf="selectedFile" [src]="selectedFile" />
     </div>
 
+    <div class="nsfw-container">
+      <label id="example-radio-group-label"
+        >You must indicate if this image is SFW or NSFW</label
+      >
+      <p>
+        Please read our <a>NSFW Terms</a> to better understand which option your
+        image falls under
+      </p>
+      <mat-radio-group
+        aria-labelledby="example-radio-group-label"
+        formControlName="nsfw"
+        appearance="outline"
+      >
+        <mat-radio-button value="sfw">SFW</mat-radio-button>
+        <mat-radio-button value="nsfw">NSFW</mat-radio-button>
+      </mat-radio-group>
+    </div>
+
     <div class="tags-container">
       <p>Adding tags will help your post appear in search queries</p>
       <mat-form-field class="tags-list" appearance="outline">

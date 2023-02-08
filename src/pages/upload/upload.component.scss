@@ -116,3 +116,19 @@ mat-form-field {
     }
   }
 }
+
+.nsfw-container {
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
+  .mat-radio-button#mat-radio-3 {
+    margin-left: 16px;
+  }
+  ::ng-deep .mat-radio-label-content {
+    color: $secondary;
+  }
+  label,
+  p {
+    color: $secondary;
+  }
+}

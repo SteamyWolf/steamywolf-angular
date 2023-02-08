@@ -40,11 +40,18 @@ export class AuthService {
     file: string | ArrayBuffer,
     title: string,
     description: string,
-    tags: string[]
+    tags: string[],
+    nsfw: string
   ) {
     return this.http.post(
       'http://localhost:4000/api/upload',
-      { file: file, title: title, description: description, tags: tags },
+      {
+        file: file,
+        title: title,
+        description: description,
+        tags: tags,
+        nsfw: nsfw,
+      },
       { withCredentials: true }
     );
   }

@@ -4,7 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/services/auth.service';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
-import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-upload',
@@ -33,6 +33,7 @@ export class UploadComponent implements OnInit {
       ]),
       description: new FormControl(''),
       tags: new FormControl([], Validators.maxLength(20)),
+      nsfw: new FormControl('', Validators.required),
     });
   }
 
@@ -68,7 +69,8 @@ export class UploadComponent implements OnInit {
         this.selectedFile,
         this.form.controls['title'].value.trim(),
         this.form.controls['description'].value,
-        this.form.controls['tags'].value
+        this.form.controls['tags'].value,
+        this.form.controls['nsfw'].value
       )
       .subscribe(
         (data: any) => {

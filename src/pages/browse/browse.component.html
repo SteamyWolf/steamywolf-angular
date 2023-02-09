@@ -1,0 +1,30 @@
+<main>
+  <h1 class="title">Browse Gallery</h1>
+  <h3 class="subtitle">
+    Use the &#8592; or &#8594; keys to navigate with ease
+  </h3>
+  <mat-paginator
+    #paginator
+    [length]="submissions"
+    [pageSize]="10"
+    [pageSizeOptions]="[5, 10, 20]"
+    (page)="onPageChange($event)"
+  ></mat-paginator>
+  <div class="gallery-container">
+    <figure *ngFor="let submission of pageSlice">
+      <div
+        class="image-title-container"
+        (click)="postNavigate(submission.post.submissions.id)"
+      >
+        <img [src]="submission.post.submissions.image" />
+        <p class="image-title">{{ submission.post.submissions.title }}</p>
+      </div>
+      <p>
+        By
+        <a
+          ><i>{{ submission.user.username }}</i></a
+        >
+      </p>
+    </figure>
+  </div>
+</main>

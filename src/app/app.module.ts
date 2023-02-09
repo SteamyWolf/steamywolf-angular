@@ -16,6 +16,7 @@ import { UploadComponent } from 'src/pages/upload/upload.component';
 import { DndDirective } from 'src/directives/dnd.directive';
 import { PostComponent } from 'src/pages/post/post.component';
 import { SignUpComponent } from 'src/pages/sign-up/sign-up.component';
+import { BrowseComponent } from 'src/pages/browse/browse.component';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
@@ -25,6 +26,7 @@ import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatPaginatorModule } from '@angular/material/paginator';
 
 @NgModule({
   declarations: [
@@ -37,6 +39,7 @@ import { MatRadioModule } from '@angular/material/radio';
     DndDirective,
     PostComponent,
     SignUpComponent,
+    BrowseComponent,
   ],
   imports: [
     BrowserModule,
@@ -54,6 +57,7 @@ import { MatRadioModule } from '@angular/material/radio';
     NgOptimizedImage,
     MatChipsModule,
     MatRadioModule,
+    MatPaginatorModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

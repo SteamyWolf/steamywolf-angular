@@ -28,6 +28,16 @@ export class PostComponent implements OnInit {
       },
       (err) => {
         console.error(err);
+        this._snackBar.open(
+          'There seemed to have been a server issue. Please try again',
+          'X',
+          {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            panelClass: 'error-snack',
+            duration: 5000,
+          }
+        );
       }
     );
   }

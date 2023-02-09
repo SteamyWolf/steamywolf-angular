@@ -56,8 +56,18 @@ export class AuthService {
     );
   }
 
-  getRecentSubmissions() {
-    return this.http.get('http://localhost:4000/api/submissions');
+  getRecentSubmissions(page: string) {
+    return this.http.get(`http://localhost:4000/api/submissions/${page}`);
+  }
+
+  getPageRequestedSubmissions(skip: number, take: number) {
+    return this.http.get(
+      `http://localhost:4000/api/submissions/browse/${skip}/${take}`
+    );
+  }
+
+  getCountOfAllSubmission() {
+    return this.http.get('http://localhost:4000/api/submissions/count');
   }
 
   getPost(postId: number) {

@@ -19,6 +19,7 @@ interface RecentSubmission {
   styleUrls: ['./home.component.scss'],
 })
 export class HomeComponent implements OnInit {
+  // @Input() imageSrc: string;
   recentSubmissions: any[] = [];
 
   constructor(
@@ -30,6 +31,9 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.authService.getRecentSubmissions('home').subscribe(
       (data: any) => {
+        data.forEach((submission: any) => {
+          submission.post.submissions.imageLoaded = false;
+        });
         console.log(data);
         this.recentSubmissions = data;
       },
@@ -52,4 +56,14 @@ export class HomeComponent implements OnInit {
   postNavigate(id: number) {
     this.router.navigate(['post', id]);
   }
+
+  imageFinishedLoading(submission: any) {
+    console.log('image finished loading');
+    submission.imageLoaded = true;
+  }
+
+  // imageLoaded(submission: any) {
+  //   // submission.imageLoaded = true;
+  //   return submission.imageLoaded;
+  // }
 }

@@ -6,7 +6,21 @@
         class="image-title-container"
         (click)="postNavigate(recentSubmission.post.submissions.id)"
       >
-        <img [src]="recentSubmission.post.submissions.image" />
+        <ng-blurhash
+          *ngIf="
+            recentSubmission.post.submissions.hash &&
+            !recentSubmission.post.submissions.imageLoaded
+          "
+          [hash]="recentSubmission.post.submissions.hash"
+          [height]="400"
+          [width]="500"
+        ></ng-blurhash>
+        <img
+          loading="lazy"
+          (load)="imageFinishedLoading(recentSubmission.post.submissions)"
+          [src]="recentSubmission.post.submissions.image"
+          [class.hide]="!recentSubmission.post.submissions.imageLoaded"
+        />
         <p class="image-title">{{ recentSubmission.post.submissions.title }}</p>
       </div>
       <p>

@@ -18,6 +18,8 @@ import { PostComponent } from 'src/pages/post/post.component';
 import { SignUpComponent } from 'src/pages/sign-up/sign-up.component';
 import { BrowseComponent } from 'src/pages/browse/browse.component';
 import { BlurhashModule } from 'ng-blurhash';
+import { ForgotPasswordComponent } from 'src/pages/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from 'src/pages/reset-password/reset-password.component';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
@@ -41,6 +43,8 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     PostComponent,
     SignUpComponent,
     BrowseComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent,
   ],
   imports: [
     BrowserModule,

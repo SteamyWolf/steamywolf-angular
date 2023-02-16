@@ -40,6 +40,25 @@ export class AuthService {
     return this.http.post('http://localhost:4000/api/user/email', user);
   }
 
+  forgotUserPasswordRequest(email: string) {
+    return this.http.post('http://localhost:4000/api/user/forgot-password', {
+      email,
+    });
+  }
+
+  resetUserPasswordVerification(id: string, token: string) {
+    return this.http.get(
+      `http://localhost:4000/api/user/reset-password/${id}/${token}`
+    );
+  }
+
+  resetUserPassword(id: string, password: string) {
+    return this.http.post(
+      'http://localhost:4000/api/user/reset-password-request',
+      { id, password }
+    );
+  }
+
   upload(
     file: string | ArrayBuffer,
     title: string,

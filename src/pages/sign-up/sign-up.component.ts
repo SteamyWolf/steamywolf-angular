@@ -69,6 +69,15 @@ export class SignUpComponent implements OnInit, AfterViewInit {
             this.authService.signupNewUser(user).subscribe(
               (user: any) => {
                 console.log(user);
+                this.authService
+                  .signupNewUserEmail({
+                    username: user.username,
+                    email: user.email,
+                  })
+                  .subscribe({
+                    next: (value) => {},
+                    error: (error) => console.log(error),
+                  });
                 this.createNewUserLoading = false;
                 const loginNewUser = {
                   username: user.username,

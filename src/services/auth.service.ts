@@ -36,6 +36,10 @@ export class AuthService {
     return this.http.post('http://localhost:4000/api/user', user);
   }
 
+  signupNewUserEmail(user: { username: string; email: string }) {
+    return this.http.post('http://localhost:4000/api/user/email', user);
+  }
+
   upload(
     file: string | ArrayBuffer,
     title: string,

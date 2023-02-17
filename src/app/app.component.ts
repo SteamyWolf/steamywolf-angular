@@ -13,9 +13,18 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.authService.loggedInStatus().then((response: any) => {
-      console.log(response.status);
+      console.log(response);
       if (response.status) {
         this.authService.userLoggedInState.next(true);
+        this.authService.getCurrentUser(response.user.id).subscribe({
+          next: (value: any) => {
+            console.log(value);
+            this.authService.currentUser.next(value.foundUser);
+          },
+          error: (error: any) => {
+            console.log(error);
+          },
+        });
       }
     });
   }

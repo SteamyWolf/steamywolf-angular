@@ -33,6 +33,7 @@
 .links-list {
   list-style: none;
   display: flex;
+  align-items: center;
 }
 
 .link {
@@ -49,4 +50,16 @@ a[routerLink] {
   &:hover {
     color: $dark-secondary;
   }
+}
+
+::ng-deep .mat-form-field-prefix {
+  top: -2px !important;
+}
+
+::ng-deep .mat-form-field-wrapper {
+  padding-bottom: 0;
+}
+
+.search-bar {
+  color: $secondary;
 }

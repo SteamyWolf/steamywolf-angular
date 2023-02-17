@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subject } from 'rxjs';
 
 interface User {
   username: String;
@@ -12,6 +12,7 @@ export class AuthService {
   userLoggedInState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
     false
   );
+  currentUser: Subject<any> = new Subject<any>();
   constructor(private http: HttpClient) {}
 
   login(user: User) {
@@ -30,6 +31,10 @@ export class AuthService {
     return this.http
       .get('http://localhost:4000/api/auth/status', { withCredentials: true })
       .toPromise();
+  }
+
+  getCurrentUser(id: number) {
+    return this.http.get(`http://localhost:4000/api/auth/current-user/${id}`);
   }
 
   signupNewUser(user: { username: string; email: string; password: string }) {
@@ -89,8 +94,24 @@ export class AuthService {
     );
   }
 
+  getSearchQueryRequestedSubmissions(
+    query: string,
+    skip: number,
+    take: number
+  ) {
+    return this.http.get(
+      `http://localhost:4000/api/post/search/${query}/${skip}/${take}`
+    );
+  }
+
   getCountOfAllSubmission() {
     return this.http.get('http://localhost:4000/api/submissions/count');
+  }
+
+  getCountOfSearchedQuery(query: string) {
+    return this.http.get(
+      `http://localhost:4000/api/post/search-count/${query}`
+    );
   }
 
   getPost(postId: number) {

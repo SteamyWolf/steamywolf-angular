@@ -1,1 +1,45 @@
-<p>this is the account component</p>
+<div class="account-container">
+  <h1 class="title">Account</h1>
+  <div class="image-information-container">
+    <img
+      [src]="user?.thumbnail ? user?.thumbnail : '/assets/placeholder.jpg'"
+      class="thumbnail"
+    />
+    <div class="info-container">
+      <h1>{{ user?.username }}</h1>
+      <p>joined {{ user?.createdAt | date }}</p>
+    </div>
+  </div>
+  <div class="gallery-container">
+    <h1>Posts</h1>
+    <!-- <figure *ngFor="let post of user?.posts">
+      <div
+        class="image-title-container"
+        (click)="postNavigate(post.submissions.id)"
+      >
+        <ng-blurhash
+          *ngIf="
+            recentSubmission.post.submissions.hash &&
+            !recentSubmission.post.submissions.imageLoaded
+          "
+          [hash]="recentSubmission.post.submissions.hash"
+          [height]="400"
+          [width]="500"
+        ></ng-blurhash>
+        <img
+          loading="lazy"
+          (load)="imageFinishedLoading(recentSubmission.post.submissions)"
+          [src]="recentSubmission.post.submissions.image"
+          [class.hide]="!recentSubmission.post.submissions.imageLoaded"
+        />
+        <p class="image-title">{{ recentSubmission.post.submissions.title }}</p>
+      </div>
+      <p>
+        By
+        <a
+          ><i>{{ recentSubmission.user.username }}</i></a
+        >
+      </p>
+    </figure> -->
+  </div>
+</div>

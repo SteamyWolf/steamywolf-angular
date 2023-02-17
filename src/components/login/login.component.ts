@@ -46,7 +46,15 @@ export class LoginComponent implements OnInit {
               }
             );
             this.authService.userLoggedInState.next(true);
-            this.router.navigate(['/']);
+            this.authService.getCurrentUser(data.user.id).subscribe({
+              next: (value: any) => {
+                this.authService.currentUser.next(value.foundUser);
+                this.router.navigate(['/']);
+              },
+              error: (error) => {
+                console.log(error);
+              },
+            });
           }
         },
         (err) => {

@@ -13,12 +13,17 @@ import { AuthGuard } from 'src/services/auth-guard.service';
 
 const routes: Routes = [
   {
+    path: 'browse/:query',
+    component: BrowseComponent,
+  },
+  {
     path: 'browse',
     component: BrowseComponent,
   },
   {
     path: 'account',
     component: AccountComponent,
+    canActivate: [AuthGuard],
   },
   {
     path: 'upload',

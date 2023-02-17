@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/services/auth.service';
 
 @Component({
@@ -10,8 +11,10 @@ import { AuthService } from 'src/services/auth.service';
 })
 export class HeaderComponent implements OnInit {
   loggedIn: boolean = false;
+  searchForm: FormGroup;
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private authService: AuthService,
     private _snackBar: MatSnackBar
   ) {}
@@ -23,6 +26,10 @@ export class HeaderComponent implements OnInit {
       },
       error: (error) => console.log(error),
     });
+
+    this.searchForm = new FormGroup({
+      search: new FormControl(''),
+    });
   }
 
   navigateHome() {
@@ -31,7 +38,6 @@ export class HeaderComponent implements OnInit {
 
   logout() {
     this.authService.logout().subscribe((response: any) => {
-      console.log(response);
       this._snackBar.open('Successfully logged out', 'X', {
         horizontalPosition: 'center',
         verticalPosition: 'top',
@@ -39,7 +45,24 @@ export class HeaderComponent implements OnInit {
         duration: 5000,
       });
       this.authService.userLoggedInState.next(false);
+      this.authService.currentUser.next(null);
       this.navigateHome();
     });
+  }
+
+  search() {
+    if (this.router.url.includes('/browse/')) {
+      this.router.navigate(['/'], { skipLocationChange: true }).then(() => {
+        this.router.navigate([
+          'browse',
+          this.searchForm.controls['search'].value,
+        ]);
+      });
+    } else {
+      this.router.navigate([
+        'browse',
+        this.searchForm.controls['search'].value,
+      ]);
+    }
   }
 }

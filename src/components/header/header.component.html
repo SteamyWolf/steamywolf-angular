@@ -5,6 +5,26 @@
   </div>
   <div class="links-container">
     <ul class="links-list">
+      <form [formGroup]="searchForm" (ngSubmit)="search()">
+        <mat-form-field appearance="outline">
+          <mat-label>Search</mat-label>
+          <input
+            type="text"
+            matInput
+            class="search-bar"
+            formControlName="search"
+          />
+          <button
+            matPrefix
+            mat-icon-button
+            aria-label="Search"
+            type="submit"
+            (click)="search()"
+          >
+            <mat-icon color="primary">search</mat-icon>
+          </button>
+        </mat-form-field>
+      </form>
       <li>
         <button class="link" color="primary" mat-button>
           <a routerLink="/browse">Browse</a>

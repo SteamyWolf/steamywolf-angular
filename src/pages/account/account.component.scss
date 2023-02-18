@@ -16,3 +16,58 @@
     color: $secondary;
   }
 }
+
+.image-title-container {
+  cursor: pointer;
+}
+
+.posts-gallery,
+.favorites-gallery {
+  padding-top: 40px;
+  .posts-title,
+  .favorites-title {
+    color: $light-primary;
+  }
+}
+
+.seeAll-positioning {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  .seeAll {
+    padding-top: 20px;
+    color: $light-primary;
+    cursor: pointer;
+    &:hover {
+      color: $secondary;
+    }
+  }
+}
+
+.gallery-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+  width: 100%;
+
+  & figure {
+    margin: 0;
+    height: 440px;
+  }
+
+  & img {
+    height: 400px;
+  }
+
+  & p {
+    margin: 0;
+    text-align: center;
+    color: $secondary;
+  }
+}
+
+.empty-length {
+  text-align: center;
+  color: $secondary;
+}

@@ -10,36 +10,65 @@
       <p>joined {{ user?.createdAt | date }}</p>
     </div>
   </div>
-  <div class="gallery-container">
-    <h1>Posts</h1>
-    <!-- <figure *ngFor="let post of user?.posts">
-      <div
-        class="image-title-container"
-        (click)="postNavigate(post.submissions.id)"
-      >
-        <ng-blurhash
-          *ngIf="
-            recentSubmission.post.submissions.hash &&
-            !recentSubmission.post.submissions.imageLoaded
-          "
-          [hash]="recentSubmission.post.submissions.hash"
-          [height]="400"
-          [width]="500"
-        ></ng-blurhash>
-        <img
-          loading="lazy"
-          (load)="imageFinishedLoading(recentSubmission.post.submissions)"
-          [src]="recentSubmission.post.submissions.image"
-          [class.hide]="!recentSubmission.post.submissions.imageLoaded"
-        />
-        <p class="image-title">{{ recentSubmission.post.submissions.title }}</p>
+  <div class="posts-gallery">
+    <h1 class="posts-title">Posts</h1>
+    <div class="seeAll-positioning">
+      <div class="gallery-container">
+        <figure *ngFor="let post of alteredUserPosts">
+          <div class="image-title-container" (click)="postNavigate(post.id)">
+            <img loading="lazy" [src]="post.image" />
+            <p class="image-title">{{ post.title }}</p>
+          </div>
+          <p>
+            By
+            <a
+              ><i>{{ user?.username }}</i></a
+            >
+          </p>
+        </figure>
       </div>
-      <p>
-        By
-        <a
-          ><i>{{ recentSubmission.user.username }}</i></a
-        >
-      </p>
-    </figure> -->
+      <div class="empty-length" *ngIf="!alteredUserPosts.length">
+        <h2>Looks like you haven't posted yet</h2>
+        <p>Create something amazing to share</p>
+      </div>
+      <a
+        *ngIf="alteredUserPosts.length"
+        class="seeAll"
+        (click)="handleSeeAll('posts')"
+        >{{ seeAllPostsOpened ? "See Less" : "See All" }}</a
+      >
+    </div>
+  </div>
+  <div class="favorites-gallery">
+    <h1 class="favorites-title">Favorites</h1>
+    <div class="seeAll-positioning">
+      <div class="gallery-container" *ngIf="alteredUserFavorites.length">
+        <figure *ngFor="let favorite of alteredUserFavorites">
+          <div
+            class="image-title-container"
+            (click)="postNavigate(favorite.id)"
+          >
+            <img loading="lazy" [src]="favorite.image" />
+            <p class="image-title">{{ favorite.title }}</p>
+          </div>
+          <p>
+            By
+            <a
+              ><i>{{ user?.username }}</i></a
+            >
+          </p>
+        </figure>
+      </div>
+      <div class="empty-length" *ngIf="!alteredUserFavorites.length">
+        <h2>Looks like you haven't starred any posts yet</h2>
+        <p>Click the star icon on a post to favorite it</p>
+      </div>
+      <a
+        *ngIf="alteredUserFavorites.length"
+        class="seeAll"
+        (click)="handleSeeAll('favorites')"
+        >{{ seeAllFavoritesOpened ? "See Less" : "See All" }}</a
+      >
+    </div>
   </div>
 </div>

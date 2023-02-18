@@ -12,7 +12,7 @@ export class AuthService {
   userLoggedInState: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(
     false
   );
-  currentUser: Subject<any> = new Subject<any>();
+  currentUser: BehaviorSubject<any> = new BehaviorSubject<any>(null);
   constructor(private http: HttpClient) {}
 
   login(user: User) {

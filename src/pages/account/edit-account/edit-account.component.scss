@@ -1,0 +1,25 @@
+@import "src/styles.scss";
+
+.titles-container {
+  margin-bottom: 15px;
+}
+.title {
+  color: $light-primary;
+}
+
+.secondary {
+  color: $secondary;
+}
+
+.cropper-image-container {
+  display: flex;
+  justify-content: space-evenly;
+  padding-bottom: 15px;
+  .image-cropper {
+    width: 50%;
+  }
+  .croppedImage {
+    width: 50%;
+    text-align: center;
+  }
+}

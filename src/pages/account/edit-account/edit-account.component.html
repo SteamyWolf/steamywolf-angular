@@ -1,0 +1,45 @@
+<div class="edit-account-container">
+  <div class="titles-container">
+    <h1 class="title">Edit Account</h1>
+    <h2 class="title">Change Account Image</h2>
+    <p class="secondary">Current Account Image:</p>
+    <img [src]="user?.thumbnail" />
+    <p class="secondary">
+      Account images are automatically scaled to 100px x 100px
+    </p>
+  </div>
+
+  <input type="file" (change)="fileChangeEvent($event)" #fileInput />
+
+  <div class="cropper-image-container" *ngIf="userAddedAnImage">
+    <image-cropper
+      class="image-cropper"
+      [imageChangedEvent]="imageChangedEvent"
+      [maintainAspectRatio]="true"
+      [aspectRatio]="1 / 1"
+      format="png"
+      (imageCropped)="imageCropped($event)"
+      (imageLoaded)="imageLoaded($event)"
+      (cropperReady)="cropperReady()"
+      (loadImageFailed)="loadImageFailed()"
+      [resizeToWidth]="100"
+      [resizeToHeight]="100"
+    ></image-cropper>
+
+    <div class="croppedImage">
+      <img [src]="croppedImage" />
+    </div>
+  </div>
+  <button
+    mat-raised-button
+    type="button"
+    *ngIf="userAddedAnImage"
+    (click)="uploadAccountImage()"
+    [disabled]="loading"
+  >
+    <span *ngIf="loading" class="button-loading-spinner">
+      <mat-spinner diameter="30"></mat-spinner>
+    </span>
+    <span *ngIf="!loading">Submit New Account Image</span>
+  </button>
+</div>

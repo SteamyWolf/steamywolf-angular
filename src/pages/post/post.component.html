@@ -15,7 +15,10 @@
   </div>
 
   <div class="image-information-container">
-    <img [src]="user?.thumbnail" />
+    <img
+      class="user-thumbnail"
+      [src]="user?.thumbnail ? user?.thumbnail : '/assets/placeholder.jpg'"
+    />
     <div class="info-container">
       <h1>{{ post?.title }}</h1>
       <p>

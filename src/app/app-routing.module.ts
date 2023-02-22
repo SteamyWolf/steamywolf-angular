@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from 'src/components/login/login.component';
 import { AccountComponent } from 'src/pages/account/account.component';
+import { EditAccountComponent } from 'src/pages/account/edit-account/edit-account.component';
 import { BrowseComponent } from 'src/pages/browse/browse.component';
 import { ForgotPasswordComponent } from 'src/pages/forgot-password/forgot-password.component';
 import { HomeComponent } from 'src/pages/home/home.component';
@@ -23,6 +24,11 @@ const routes: Routes = [
   {
     path: 'account',
     component: AccountComponent,
+    canActivate: [AuthGuard],
+  },
+  {
+    path: 'account/edit',
+    component: EditAccountComponent,
     canActivate: [AuthGuard],
   },
   {

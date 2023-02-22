@@ -1,5 +1,10 @@
 <div class="account-container">
-  <h1 class="title">Account</h1>
+  <div class="title-container">
+    <h1 class="title">Account</h1>
+    <div class="edit-icon" (click)="navigateEdit()">
+      <mat-icon color="white">edit</mat-icon>
+    </div>
+  </div>
   <div class="image-information-container">
     <img
       [src]="user?.thumbnail ? user?.thumbnail : '/assets/placeholder.jpg'"

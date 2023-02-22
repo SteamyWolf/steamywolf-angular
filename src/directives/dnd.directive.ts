@@ -19,16 +19,12 @@ export class DndDirective {
     evt.preventDefault();
     evt.stopPropagation();
     this.fileOver = true;
-
-    console.log('Drag Over');
   }
 
   @HostListener('dragleave', ['$event']) public onDragLeave(evt: Event) {
     evt.preventDefault();
     evt.stopPropagation();
     this.fileOver = false;
-
-    console.log('Drag Leave');
   }
 
   @HostListener('drop', ['$event']) public onDrop(evt: any) {

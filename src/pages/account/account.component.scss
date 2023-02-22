@@ -1,7 +1,19 @@
 @import "src/styles.scss";
 
-.title {
-  color: $light-primary;
+.title-container {
+  position: relative;
+  .title {
+    color: $light-primary;
+  }
+  .edit-icon {
+    position: absolute;
+    right: 0;
+    top: 5px;
+    cursor: pointer;
+    mat-icon {
+      color: $light-primary;
+    }
+  }
 }
 
 .image-information-container {

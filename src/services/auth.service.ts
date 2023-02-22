@@ -84,6 +84,14 @@ export class AuthService {
     );
   }
 
+  uploadNewUserThumbnail(file: string, public_id: string) {
+    return this.http.post(
+      'http://localhost:4000/api/upload/thumbnail',
+      { file, public_id },
+      { withCredentials: true }
+    );
+  }
+
   getRecentSubmissions(page: string) {
     return this.http.get(`http://localhost:4000/api/submissions/${page}`);
   }

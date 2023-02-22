@@ -4,6 +4,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { NgOptimizedImage } from '@angular/common';
+import { ImageCropperModule } from 'ngx-image-cropper';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -20,6 +21,7 @@ import { BrowseComponent } from 'src/pages/browse/browse.component';
 import { BlurhashModule } from 'ng-blurhash';
 import { ForgotPasswordComponent } from 'src/pages/forgot-password/forgot-password.component';
 import { ResetPasswordComponent } from 'src/pages/reset-password/reset-password.component';
+import { EditAccountComponent } from 'src/pages/account/edit-account/edit-account.component';
 
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
@@ -45,6 +47,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     BrowseComponent,
     ForgotPasswordComponent,
     ResetPasswordComponent,
+    EditAccountComponent,
   ],
   imports: [
     BrowserModule,
@@ -64,6 +67,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatRadioModule,
     MatPaginatorModule,
     BlurhashModule,
+    ImageCropperModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

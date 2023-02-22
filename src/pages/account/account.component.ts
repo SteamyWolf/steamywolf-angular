@@ -77,6 +77,10 @@ export class AccountComponent implements OnInit, OnDestroy {
     }
   }
 
+  navigateEdit() {
+    this.router.navigate(['account', 'edit']);
+  }
+
   ngOnDestroy(): void {
     this.subscriptions.forEach((sub) => sub.unsubscribe);
   }

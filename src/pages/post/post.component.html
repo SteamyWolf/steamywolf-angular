@@ -11,6 +11,16 @@
           <mat-chip *ngFor="let tag of post.tags">{{ tag }}</mat-chip>
         </mat-chip-list>
       </div>
+      <div class="favorite-container" *ngIf="userLoggedIn">
+        <mat-icon class="favorites-icon" (click)="addRemoveFavorite()">{{
+          hasBeenAddedToFavorites ? "star" : "star_outline"
+        }}</mat-icon>
+        <p class="secondary-text">
+          {{
+            hasBeenAddedToFavorites ? "Added to Favorites" : "Add to Favorites"
+          }}
+        </p>
+      </div>
     </div>
   </div>
 

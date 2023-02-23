@@ -38,10 +38,10 @@ export class AccountComponent implements OnInit, OnDestroy {
           console.log(value);
           if (value) {
             this.alteredUserPosts = value?.posts?.slice(0, 4);
-            this.allUserPosts = value.posts;
+            this.allUserPosts = value?.posts;
 
             this.alteredUserFavorites = value?.favorites.slice(0, 4);
-            this.allUserFavorites = value?.favorited;
+            this.allUserFavorites = value?.favorites;
             this.user = value;
           }
         },

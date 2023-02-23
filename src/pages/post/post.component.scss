@@ -1,4 +1,5 @@
 @import "src/styles.scss";
+@import url("https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined");
 
 .image-side-bar-container {
   display: flex;
@@ -18,6 +19,7 @@
   box-shadow: 4px 4px 5px $light-primary;
   padding: 10px;
   margin-left: 15px;
+  position: relative;
 
   .chips-container {
     h3 {
@@ -26,6 +28,24 @@
     ::ng-deep .mat-chip {
       // background-color: $dark-secondary;
       color: $secondary;
+    }
+  }
+
+  .favorite-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 15px;
+    p {
+      padding: 0;
+      margin: 0;
+    }
+    .favorites-icon {
+      color: white;
+      font-size: 30px !important;
+      height: 30px;
+      width: 30px;
+      cursor: pointer;
     }
   }
 }

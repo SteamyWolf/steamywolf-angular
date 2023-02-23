@@ -12,6 +12,8 @@ export class PostComponent implements OnInit {
   post: any = {};
   user: any = {};
   comment: string;
+  userLoggedIn: boolean = false;
+  hasBeenAddedToFavorites: boolean = false;
   constructor(
     private router: Router,
     private authService: AuthService,
@@ -40,6 +42,34 @@ export class PostComponent implements OnInit {
         );
       }
     );
+
+    this.authService.currentUser.subscribe({
+      next: (value: any) => {
+        if (value) {
+          this.userLoggedIn = true;
+          const postInFavorites = value.favorites.find(
+            (favorite: any) =>
+              +favorite.id === parseInt(this.router.url.split('/')[2])
+          );
+          if (postInFavorites?.id) {
+            this.hasBeenAddedToFavorites = true;
+          }
+        }
+      },
+      error: (error) => {
+        console.log(error);
+        this._snackBar.open(
+          'There seemed to have been a server issue. Please try again',
+          'X',
+          {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            panelClass: 'error-snack',
+            duration: 5000,
+          }
+        );
+      },
+    });
   }
 
   submitComment() {
@@ -47,7 +77,6 @@ export class PostComponent implements OnInit {
       .postComment(parseInt(this.post.id), this.comment)
       .subscribe(
         (response: any) => {
-          console.log(response);
           this.comment = '';
           this.ngOnInit();
         },
@@ -68,5 +97,65 @@ export class PostComponent implements OnInit {
           }
         }
       );
+  }
+
+  addRemoveFavorite() {
+    if (this.hasBeenAddedToFavorites) {
+      this.authService
+        .removeFavoritedPost(parseInt(this.router.url.split('/')[2]))
+        .subscribe({
+          next: (value: any) => {
+            console.log(value);
+            this.hasBeenAddedToFavorites = false;
+            this.authService.currentUser.next(value.removedFavoriteUser);
+            this._snackBar.open('Successfully removed from favorites', 'X', {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+              panelClass: 'successful-snack',
+              duration: 5000,
+            });
+          },
+          error: (error) => {
+            console.log(error);
+            this._snackBar.open(
+              'There was an error removing from favorites. Please try again',
+              'X',
+              {
+                horizontalPosition: 'center',
+                verticalPosition: 'top',
+                panelClass: 'error-snack',
+                duration: 5000,
+              }
+            );
+          },
+        });
+    }
+    if (!this.hasBeenAddedToFavorites) {
+      this.authService.addNewFavoritePost(this.post).subscribe({
+        next: (value: any) => {
+          this.hasBeenAddedToFavorites = true;
+          this.authService.currentUser.next(value.addedFavoriteUser);
+          this._snackBar.open('Successfully added to favorites', 'X', {
+            horizontalPosition: 'center',
+            verticalPosition: 'top',
+            panelClass: 'successful-snack',
+            duration: 5000,
+          });
+        },
+        error: (error) => {
+          console.log(error);
+          this._snackBar.open(
+            'There was an error adding to favorites. Please try again',
+            'X',
+            {
+              horizontalPosition: 'center',
+              verticalPosition: 'top',
+              panelClass: 'error-snack',
+              duration: 5000,
+            }
+          );
+        },
+      });
+    }
   }
 }

@@ -140,4 +140,22 @@ export class AuthService {
   checkUsername(username: string) {
     return this.http.get(`http://localhost:4000/api/auth/${username}`);
   }
+
+  addNewFavoritePost(favoritePost: any) {
+    return this.http.post(
+      'http://localhost:4000/api/post/add-favorite',
+      {
+        favoritePost,
+      },
+      { withCredentials: true }
+    );
+  }
+
+  removeFavoritedPost(postId: number) {
+    return this.http.post(
+      'http://localhost:4000/api/post/remove-favorite',
+      { postId },
+      { withCredentials: true }
+    );
+  }
 }

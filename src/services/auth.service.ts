@@ -92,33 +92,34 @@ export class AuthService {
     );
   }
 
-  getRecentSubmissions(page: string) {
-    return this.http.get(`http://localhost:4000/api/submissions/${page}`);
+  getRecentSubmissions(nsfw: boolean) {
+    return this.http.get(`http://localhost:4000/api/submissions/${nsfw}`);
   }
 
-  getPageRequestedSubmissions(skip: number, take: number) {
+  getPageRequestedSubmissions(skip: number, take: number, nsfw: boolean) {
     return this.http.get(
-      `http://localhost:4000/api/submissions/browse/${skip}/${take}`
+      `http://localhost:4000/api/submissions/browse/${skip}/${take}/${nsfw}`
     );
   }
 
   getSearchQueryRequestedSubmissions(
     query: string,
     skip: number,
-    take: number
+    take: number,
+    nsfw: boolean
   ) {
     return this.http.get(
-      `http://localhost:4000/api/post/search/${query}/${skip}/${take}`
+      `http://localhost:4000/api/post/search/${query}/${skip}/${take}/${nsfw}`
     );
   }
 
-  getCountOfAllSubmission() {
-    return this.http.get('http://localhost:4000/api/submissions/count');
+  getCountOfAllSubmissions(nsfw: boolean) {
+    return this.http.get(`http://localhost:4000/api/submissions/count/${nsfw}`);
   }
 
-  getCountOfSearchedQuery(query: string) {
+  getCountOfSearchedQuery(query: string, nsfw: boolean) {
     return this.http.get(
-      `http://localhost:4000/api/post/search-count/${query}`
+      `http://localhost:4000/api/post/search-count/${query}/${nsfw}`
     );
   }
 
@@ -155,6 +156,14 @@ export class AuthService {
     return this.http.post(
       'http://localhost:4000/api/post/remove-favorite',
       { postId },
+      { withCredentials: true }
+    );
+  }
+
+  updateNsfwChecked(nsfw: boolean) {
+    return this.http.post(
+      'http://localhost:4000/api/user/nsfw',
+      { nsfw },
       { withCredentials: true }
     );
   }

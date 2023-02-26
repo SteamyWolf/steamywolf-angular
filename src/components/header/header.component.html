@@ -25,6 +25,14 @@
           </button>
         </mat-form-field>
       </form>
+      <mat-slide-toggle
+        *ngIf="loggedIn"
+        class="nsfw-slide-toggle"
+        color="primary"
+        (change)="nsfwToggled($event)"
+        [checked]="currentUser?.nsfw_checked"
+        >NSFW</mat-slide-toggle
+      >
       <li>
         <button class="link" color="primary" mat-button>
           <a routerLink="/browse">Browse</a>

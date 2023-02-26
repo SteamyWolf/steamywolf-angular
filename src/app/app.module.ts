@@ -32,6 +32,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 @NgModule({
   declarations: [
@@ -68,6 +69,7 @@ import { MatPaginatorModule } from '@angular/material/paginator';
     MatPaginatorModule,
     BlurhashModule,
     ImageCropperModule,
+    MatSlideToggleModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

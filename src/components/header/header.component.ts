@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/services/auth.service';
 
 @Component({
@@ -12,9 +13,9 @@ import { AuthService } from 'src/services/auth.service';
 export class HeaderComponent implements OnInit {
   loggedIn: boolean = false;
   searchForm: FormGroup;
+  currentUser: any = {};
   constructor(
     private router: Router,
-    private route: ActivatedRoute,
     private authService: AuthService,
     private _snackBar: MatSnackBar
   ) {}
@@ -23,6 +24,14 @@ export class HeaderComponent implements OnInit {
     this.authService.userLoggedInState.subscribe({
       next: (value: boolean) => {
         this.loggedIn = value;
+      },
+      error: (error) => console.log(error),
+    });
+
+    this.authService.currentUser.subscribe({
+      next: (value: any) => {
+        console.log(value);
+        this.currentUser = value;
       },
       error: (error) => console.log(error),
     });
@@ -64,5 +73,14 @@ export class HeaderComponent implements OnInit {
         this.searchForm.controls['search'].value,
       ]);
     }
+  }
+
+  nsfwToggled(value: MatSlideToggleChange) {
+    this.authService.updateNsfwChecked(value.checked).subscribe({
+      next: (value: any) => {
+        this.authService.currentUser.next(value.foundUser);
+      },
+      error: (error) => console.log(error),
+    });
   }
 }

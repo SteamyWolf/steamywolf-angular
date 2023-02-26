@@ -1,6 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { AuthService } from 'src/services/auth.service';
 
 interface RecentSubmission {
@@ -18,9 +19,10 @@ interface RecentSubmission {
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   // @Input() imageSrc: string;
   recentSubmissions: any[] = [];
+  subscriptions: Subscription[] = [];
 
   constructor(
     private authService: AuthService,
@@ -29,27 +31,37 @@ export class HomeComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.authService.getRecentSubmissions('home').subscribe(
-      (data: any) => {
-        data.forEach((submission: any) => {
-          submission.post.submissions.imageLoaded = false;
-        });
-        console.log(data);
-        this.recentSubmissions = data;
-      },
-      (error) => {
-        console.log(error);
-        this._snackBar.open(
-          'There was an error fetching the posts. Please try again',
-          'X',
-          {
-            horizontalPosition: 'center',
-            verticalPosition: 'top',
-            panelClass: 'error-snack',
-            duration: 7000,
-          }
-        );
-      }
+    this.subscriptions.push(
+      this.authService.currentUser.subscribe({
+        next: (currentUser: any) => {
+          this.subscriptions.push(
+            this.authService
+              .getRecentSubmissions(currentUser?.nsfw_checked || false)
+              .subscribe(
+                (data: any) => {
+                  data.forEach((submission: any) => {
+                    submission.post.submissions.imageLoaded = false;
+                  });
+                  console.log(data);
+                  this.recentSubmissions = data;
+                },
+                (error) => {
+                  console.log(error);
+                  this._snackBar.open(
+                    'There was an error fetching the posts. Please try again',
+                    'X',
+                    {
+                      horizontalPosition: 'center',
+                      verticalPosition: 'top',
+                      panelClass: 'error-snack',
+                      duration: 7000,
+                    }
+                  );
+                }
+              )
+          );
+        },
+      })
     );
   }
 
@@ -60,6 +72,10 @@ export class HomeComponent implements OnInit {
   imageFinishedLoading(submission: any) {
     console.log('image finished loading');
     submission.imageLoaded = true;
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe);
   }
 
   // imageLoaded(submission: any) {

@@ -13,6 +13,7 @@ export class BrowseComponent implements OnInit {
   pageSlice: any[] = [];
   hasQuery: boolean = false;
   query: string = '';
+  currentUser: any;
   @ViewChild('paginator') paginator: MatPaginator;
   constructor(
     private authService: AuthService,
@@ -21,58 +22,75 @@ export class BrowseComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    console.log(this.route.snapshot.params);
-    if (!this.route.snapshot.params['query']) {
-      this.hasQuery = false;
-      this.authService.getCountOfAllSubmission().subscribe(
-        (count: any) => {
-          this.submissions = +count;
-        },
-        (err) => {
-          console.log(err);
-        }
-      );
+    this.authService.currentUser.subscribe({
+      next: (value: any) => {
+        this.currentUser = value;
+        if (!this.route.snapshot.params['query']) {
+          this.hasQuery = false;
+          this.authService
+            .getCountOfAllSubmissions(this.currentUser?.nsfw_checked || false)
+            .subscribe(
+              (count: any) => {
+                this.submissions = +count;
+              },
+              (err) => {
+                console.log(err);
+              }
+            );
 
-      this.authService.getPageRequestedSubmissions(0, 10).subscribe(
-        (data: any) => {
-          this.pageSlice = data;
-        },
-        (err) => {
-          console.log(err);
+          this.authService
+            .getPageRequestedSubmissions(
+              0,
+              10,
+              this.currentUser?.nsfw_checked || false
+            )
+            .subscribe(
+              (data: any) => {
+                this.pageSlice = data;
+              },
+              (err) => {
+                console.log(err);
+              }
+            );
         }
-      );
-    }
-    if (this.route.snapshot.params['query']) {
-      this.hasQuery = true;
-      this.query = this.route.snapshot.params['query'];
-      this.authService
-        .getCountOfSearchedQuery(this.route.snapshot.params['query'])
-        .subscribe({
-          next: (value) => {
-            console.log(value);
-            this.submissions = +value;
-          },
-          error: (error) => {
-            console.log(error);
-          },
-        });
+        if (this.route.snapshot.params['query']) {
+          this.hasQuery = true;
+          this.query = this.route.snapshot.params['query'];
+          this.authService
+            .getCountOfSearchedQuery(
+              this.route.snapshot.params['query'],
+              this.currentUser?.nsfw_checked || false
+            )
+            .subscribe({
+              next: (value) => {
+                console.log(value);
+                this.submissions = +value;
+              },
+              error: (error) => {
+                console.log(error);
+              },
+            });
 
-      this.authService
-        .getSearchQueryRequestedSubmissions(
-          this.route.snapshot.params['query'],
-          0,
-          10
-        )
-        .subscribe({
-          next: (value: any) => {
-            console.log(value);
-            this.pageSlice = value;
-          },
-          error: (error) => {
-            console.log(error);
-          },
-        });
-    }
+          this.authService
+            .getSearchQueryRequestedSubmissions(
+              this.route.snapshot.params['query'],
+              0,
+              10,
+              this.currentUser?.nsfw_checked || false
+            )
+            .subscribe({
+              next: (value: any) => {
+                console.log(value);
+                this.pageSlice = value;
+              },
+              error: (error) => {
+                console.log(error);
+              },
+            });
+        }
+      },
+      error: (error) => console.log(error),
+    });
   }
 
   @HostListener('document:keyup', ['$event'])
@@ -94,7 +112,11 @@ export class BrowseComponent implements OnInit {
 
     if (!this.hasQuery) {
       this.authService
-        .getPageRequestedSubmissions(startIndex, event.pageSize)
+        .getPageRequestedSubmissions(
+          startIndex,
+          event.pageSize,
+          this.currentUser?.nsfw_checked || false
+        )
         .subscribe((data: any) => {
           this.pageSlice = data;
         });
@@ -104,7 +126,8 @@ export class BrowseComponent implements OnInit {
         .getSearchQueryRequestedSubmissions(
           this.query,
           startIndex,
-          event.pageSize
+          event.pageSize,
+          this.currentUser?.nsfw_checked || false
         )
         .subscribe({
           next: (value: any) => {

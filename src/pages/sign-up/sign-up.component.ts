@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnDestroy, OnInit } from '@angular/core';
 import {
   AbstractControl,
   FormControl,
@@ -11,6 +11,7 @@ import {
 import { ErrorStateMatcher } from '@angular/material/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { AuthService } from 'src/services/auth.service';
 
 @Component({
@@ -18,11 +19,12 @@ import { AuthService } from 'src/services/auth.service';
   templateUrl: './sign-up.component.html',
   styleUrls: ['./sign-up.component.scss'],
 })
-export class SignUpComponent implements OnInit, AfterViewInit {
+export class SignUpComponent implements OnInit, AfterViewInit, OnDestroy {
   signupForm: FormGroup;
   usernameLoading: boolean = false;
   createNewUserLoading: boolean = false;
   matcher = new MyErrorStateMatcher();
+  subscriptions: Subscription[] = [];
   constructor(
     private authService: AuthService,
     private _snackBar: MatSnackBar,
@@ -45,6 +47,10 @@ export class SignUpComponent implements OnInit, AfterViewInit {
     this.signupForm.setErrors({ usernameChecked: true });
   }
 
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
+  }
+
   checkPasswords(group: AbstractControl): ValidationErrors | null {
     let pass = group.get('password')?.value;
     let confirmPass = group.get('confirmPassword')?.value;
@@ -53,101 +59,105 @@ export class SignUpComponent implements OnInit, AfterViewInit {
 
   checkUsernameAvailability(submitFormTriggered: boolean) {
     this.usernameLoading = true;
-    this.authService
-      .checkUsername(this.signupForm.controls['username'].value)
-      .subscribe(
-        (response: any) => {
-          this.usernameLoading = false;
-          console.log(response);
-          if (submitFormTriggered) {
-            this.createNewUserLoading = true;
-            const user = {
-              username: this.signupForm.controls['username'].value,
-              email: this.signupForm.controls['email'].value,
-              password: this.signupForm.controls['password'].value,
-            };
-            this.authService.signupNewUser(user).subscribe(
-              (user: any) => {
-                console.log(user);
-                this.authService
-                  .signupNewUserEmail({
-                    username: user.username,
-                    email: user.email,
-                  })
-                  .subscribe({
-                    next: (value) => {},
-                    error: (error) => console.log(error),
-                  });
-                this.createNewUserLoading = false;
-                const loginNewUser = {
-                  username: user.username,
-                  password: this.signupForm.controls['password'].value,
-                };
-                this.authService
-                  .login(loginNewUser)
-                  .subscribe((response: any) => {
-                    console.log(response);
+    this.subscriptions.push(
+      this.authService
+        .checkUsername(this.signupForm.controls['username'].value)
+        .subscribe(
+          (response: any) => {
+            this.usernameLoading = false;
+            if (submitFormTriggered) {
+              this.createNewUserLoading = true;
+              const user = {
+                username: this.signupForm.controls['username'].value,
+                email: this.signupForm.controls['email'].value,
+                password: this.signupForm.controls['password'].value,
+              };
+              this.subscriptions.push(
+                this.authService.signupNewUser(user).subscribe(
+                  (user: any) => {
+                    this.subscriptions.push(
+                      this.authService
+                        .signupNewUserEmail({
+                          username: user.username,
+                          email: user.email,
+                        })
+                        .subscribe({
+                          next: (value) => {},
+                          error: (error) => console.log(error),
+                        })
+                    );
+                    this.createNewUserLoading = false;
+                    const loginNewUser = {
+                      username: user.username,
+                      password: this.signupForm.controls['password'].value,
+                    };
+                    this.subscriptions.push(
+                      this.authService
+                        .login(loginNewUser)
+                        .subscribe((response: any) => {
+                          this._snackBar.open(
+                            `Welcome ${user.username} to SteamyWolf!`,
+                            'X',
+                            {
+                              horizontalPosition: 'center',
+                              verticalPosition: 'top',
+                              panelClass: 'successful-snack',
+                              duration: 5000,
+                            }
+                          );
+                          this.authService.userLoggedInState.next(true);
+                          this.router.navigate(['/']);
+                        })
+                    );
+                  },
+                  (error) => {
+                    console.log(error);
+                    this.createNewUserLoading = false;
                     this._snackBar.open(
-                      `Welcome ${user.username} to SteamyWolf!`,
+                      'There was a server error when creating a new account. Please try again',
                       'X',
                       {
                         horizontalPosition: 'center',
                         verticalPosition: 'top',
-                        panelClass: 'successful-snack',
+                        panelClass: 'error-snack',
                         duration: 5000,
                       }
                     );
-                    this.authService.userLoggedInState.next(true);
-                    this.router.navigate(['/']);
-                  });
-              },
-              (error) => {
-                console.log(error);
-                this.createNewUserLoading = false;
-                this._snackBar.open(
-                  'There was a server error when creating a new account. Please try again',
-                  'X',
-                  {
-                    horizontalPosition: 'center',
-                    verticalPosition: 'top',
-                    panelClass: 'error-snack',
-                    duration: 5000,
                   }
-                );
-              }
-            );
-          } else {
+                )
+              );
+            } else {
+              this._snackBar.open(
+                `${this.signupForm.controls['username'].value} is available!`,
+                'X',
+                {
+                  horizontalPosition: 'center',
+                  verticalPosition: 'top',
+                  panelClass: 'successful-snack',
+                  duration: 5000,
+                }
+              );
+            }
+          },
+          (error) => {
+            console.log(error);
+            this.usernameLoading = false;
             this._snackBar.open(
-              `${this.signupForm.controls['username'].value} is available!`,
+              'There was a server error when checking for unique username',
               'X',
               {
                 horizontalPosition: 'center',
                 verticalPosition: 'top',
-                panelClass: 'successful-snack',
+                panelClass: 'error-snack',
                 duration: 5000,
               }
             );
           }
-        },
-        (error) => {
-          console.log(error);
-          this.usernameLoading = false;
-          this._snackBar.open(
-            'There was a server error when checking for unique username',
-            'X',
-            {
-              horizontalPosition: 'center',
-              verticalPosition: 'top',
-              panelClass: 'error-snack',
-              duration: 5000,
-            }
-          );
-        }
-      );
+        )
+    );
   }
 
   submitForm() {
-    console.log(this.signupForm);
     this.checkUsernameAvailability(true);
   }
 }

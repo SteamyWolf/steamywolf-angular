@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import { AuthService } from 'src/services/auth.service';
 import { COMMA, ENTER } from '@angular/cdk/keycodes';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-upload',
@@ -17,6 +18,7 @@ export class UploadComponent implements OnInit {
   loading: boolean = false;
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
   addOnBlur: boolean = true;
+  subscriptions: Subscription[] = [];
 
   constructor(
     private authService: AuthService,
@@ -64,59 +66,61 @@ export class UploadComponent implements OnInit {
 
   upload() {
     this.loading = true;
-    this.authService
-      .upload(
-        this.selectedFile,
-        this.form.controls['title'].value.trim(),
-        this.form.controls['description'].value,
-        this.form.controls['tags'].value,
-        this.form.controls['nsfw'].value
-      )
-      .subscribe(
-        (data: any) => {
-          this.loading = false;
-          this.form.controls['title'].reset(),
+    this.subscriptions.push(
+      this.authService
+        .upload(
+          this.selectedFile,
+          this.form.controls['title'].value.trim(),
+          this.form.controls['description'].value,
+          this.form.controls['tags'].value,
+          this.form.controls['nsfw'].value
+        )
+        .subscribe(
+          (data: any) => {
+            this.loading = false;
+            this.form.controls['title'].reset(),
           this.form.controls['description'].reset(), // prettier-ignore
           this.selectedFile = ''; //prettier-ignore
-          console.log(data);
-          if (data.message === 'Successfully uploaded image') {
-            // add snackbar from material
-            this._snackBar.open('Successfully uploaded post!', 'X', {
-              horizontalPosition: 'center',
-              verticalPosition: 'top',
-              panelClass: 'successful-snack',
-              duration: 5000,
-            });
-          }
-        },
-        (err) => {
-          this.loading = false;
-          if (err.error.message === 'Token does not exist or has expired') {
-            this._snackBar.open(
-              'Please sign in again. Your session has expired.',
-              'X',
-              {
+            console.log(data);
+            if (data.message === 'Successfully uploaded image') {
+              // add snackbar from material
+              this._snackBar.open('Successfully uploaded post!', 'X', {
                 horizontalPosition: 'center',
                 verticalPosition: 'top',
-                panelClass: 'error-snack',
+                panelClass: 'successful-snack',
                 duration: 5000,
-              }
-            );
-            this.router.navigate(['/login']);
-          } else {
-            this._snackBar.open(
-              'There was an unexpected error while trying to upload. Please try again',
-              'X',
-              {
-                horizontalPosition: 'center',
-                verticalPosition: 'top',
-                panelClass: 'error-snack',
-                duration: 5000,
-              }
-            );
+              });
+            }
+          },
+          (err) => {
+            this.loading = false;
+            if (err.error.message === 'Token does not exist or has expired') {
+              this._snackBar.open(
+                'Please sign in again. Your session has expired.',
+                'X',
+                {
+                  horizontalPosition: 'center',
+                  verticalPosition: 'top',
+                  panelClass: 'error-snack',
+                  duration: 5000,
+                }
+              );
+              this.router.navigate(['/login']);
+            } else {
+              this._snackBar.open(
+                'There was an unexpected error while trying to upload. Please try again',
+                'X',
+                {
+                  horizontalPosition: 'center',
+                  verticalPosition: 'top',
+                  panelClass: 'error-snack',
+                  duration: 5000,
+                }
+              );
+            }
           }
-        }
-      );
+        )
+    );
   }
 
   fileAdded(file: any) {

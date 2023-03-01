@@ -34,7 +34,6 @@ export class EditAccountComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.authService.currentUser.subscribe({
         next: (value: any) => {
-          console.log(value);
           if (value) {
             this.user = value;
           }
@@ -83,7 +82,6 @@ export class EditAccountComponent implements OnInit, OnDestroy {
         )
         .subscribe({
           next: (value: any) => {
-            console.log(value);
             this.loading = false;
             this.user.thumbnail = value.thumbnail;
             console.log(this.fileInput);

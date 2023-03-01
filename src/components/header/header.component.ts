@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
 import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { Subscription } from 'rxjs';
 import { AuthService } from 'src/services/auth.service';
 
 @Component({
@@ -10,10 +11,11 @@ import { AuthService } from 'src/services/auth.service';
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
   loggedIn: boolean = false;
   searchForm: FormGroup;
   currentUser: any = {};
+  subscriptions: Subscription[] = [];
   constructor(
     private router: Router,
     private authService: AuthService,
@@ -21,24 +23,32 @@ export class HeaderComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.authService.userLoggedInState.subscribe({
-      next: (value: boolean) => {
-        this.loggedIn = value;
-      },
-      error: (error) => console.log(error),
-    });
+    this.subscriptions.push(
+      this.authService.userLoggedInState.subscribe({
+        next: (value: boolean) => {
+          this.loggedIn = value;
+        },
+        error: (error) => console.log(error),
+      })
+    );
 
-    this.authService.currentUser.subscribe({
-      next: (value: any) => {
-        console.log(value);
-        this.currentUser = value;
-      },
-      error: (error) => console.log(error),
-    });
+    this.subscriptions.push(
+      this.authService.currentUser.subscribe({
+        next: (value: any) => {
+          console.log(value);
+          this.currentUser = value;
+        },
+        error: (error) => console.log(error),
+      })
+    );
 
     this.searchForm = new FormGroup({
       search: new FormControl(''),
     });
+  }
+
+  ngOnDestroy(): void {
+    this.subscriptions.forEach((sub) => sub.unsubscribe());
   }
 
   navigateHome() {
@@ -46,17 +56,19 @@ export class HeaderComponent implements OnInit {
   }
 
   logout() {
-    this.authService.logout().subscribe((response: any) => {
-      this._snackBar.open('Successfully logged out', 'X', {
-        horizontalPosition: 'center',
-        verticalPosition: 'top',
-        panelClass: 'successful-snack',
-        duration: 5000,
-      });
-      this.authService.userLoggedInState.next(false);
-      this.authService.currentUser.next(null);
-      this.navigateHome();
-    });
+    this.subscriptions.push(
+      this.authService.logout().subscribe((response: any) => {
+        this._snackBar.open('Successfully logged out', 'X', {
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          panelClass: 'successful-snack',
+          duration: 5000,
+        });
+        this.authService.userLoggedInState.next(false);
+        this.authService.currentUser.next(null);
+        this.navigateHome();
+      })
+    );
   }
 
   search() {
@@ -76,11 +88,13 @@ export class HeaderComponent implements OnInit {
   }
 
   nsfwToggled(value: MatSlideToggleChange) {
-    this.authService.updateNsfwChecked(value.checked).subscribe({
-      next: (value: any) => {
-        this.authService.currentUser.next(value.foundUser);
-      },
-      error: (error) => console.log(error),
-    });
+    this.subscriptions.push(
+      this.authService.updateNsfwChecked(value.checked).subscribe({
+        next: (value: any) => {
+          this.authService.currentUser.next(value.foundUser);
+        },
+        error: (error) => console.log(error),
+      })
+    );
   }
 }

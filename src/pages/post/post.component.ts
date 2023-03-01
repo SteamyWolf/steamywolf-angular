@@ -2,6 +2,12 @@ import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/services/auth.service';
+import { MatDialog } from '@angular/material/dialog';
+import { ImageDialog } from 'src/components/image-dialog/image-dialog.component';
+
+export interface ImageDialogData {
+  source: string;
+}
 
 @Component({
   selector: 'app-post',
@@ -17,7 +23,8 @@ export class PostComponent implements OnInit {
   constructor(
     private router: Router,
     private authService: AuthService,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    public dialog: MatDialog
   ) {}
 
   ngOnInit(): void {
@@ -157,5 +164,12 @@ export class PostComponent implements OnInit {
         },
       });
     }
+  }
+
+  openFullScreenImageDialog() {
+    const dialogRef = this.dialog.open(ImageDialog, {
+      data: { source: this.post.image },
+      panelClass: 'image-screen-dialog',
+    });
   }
 }

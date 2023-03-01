@@ -1,7 +1,7 @@
 <div class="post-container">
   <div class="image-side-bar-container">
     <div class="image-container">
-      <img [src]="post?.image" />
+      <img [src]="post?.image" (click)="openFullScreenImageDialog()" />
     </div>
 
     <div class="side-bar">

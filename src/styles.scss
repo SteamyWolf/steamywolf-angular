@@ -63,6 +63,14 @@ mat-icon {
   }
 }
 
+.image-screen-dialog .mat-dialog-container {
+  padding: 0;
+}
+
+.cdk-global-overlay-wrapper {
+  background-color: rgba(37, 96, 103, 0.8);
+}
+
 .body-container {
   padding: 2vw;
   min-height: 100vh;

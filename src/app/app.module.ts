@@ -33,6 +33,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { MatDialogModule } from '@angular/material/dialog';
 import { FooterComponent } from 'src/components/footer/footer.component';
 import { AboutComponent } from 'src/pages/about/about.component';
 
@@ -74,6 +75,7 @@ import { AboutComponent } from 'src/pages/about/about.component';
     BlurhashModule,
     ImageCropperModule,
     MatSlideToggleModule,
+    MatDialogModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

@@ -14,6 +14,7 @@ $white: #ffffff;
 html,
 body {
   height: 100%;
+  min-height: 100vh;
   background-color: $primary;
   background-image: url("assets/body_grad.gif");
   background-repeat: repeat-x;
@@ -64,6 +65,7 @@ mat-icon {
 
 .body-container {
   padding: 2vw;
+  min-height: 100vh;
 }
 
 // BREAKPOINTS

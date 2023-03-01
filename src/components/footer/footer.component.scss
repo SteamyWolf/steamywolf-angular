@@ -1,0 +1,57 @@
+@import "src/styles.scss";
+
+footer {
+  background-color: #0b3c3f;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 145px;
+  p {
+    margin: 0;
+    padding: 0;
+  }
+  address {
+    a {
+      color: $secondary;
+      &:hover {
+        color: $dark-secondary;
+      }
+      &:visited {
+        color: $secondary;
+      }
+    }
+  }
+}
+
+.address-container {
+  display: flex;
+  align-items: center;
+  .small-gif {
+    width: 30px;
+  }
+  .second-gif {
+    -webkit-transform: scaleX(-1);
+    -moz-transform: scaleX(-1);
+    -o-transform: scaleX(-1);
+    transform: scaleX(-1);
+  }
+}
+
+.links-container {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  .link {
+    a {
+      color: $secondary;
+      &:hover {
+        color: $dark-secondary;
+      }
+      &:visited {
+        color: $secondary;
+      }
+    }
+  }
+}

@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from 'src/components/login/login.component';
+import { AboutComponent } from 'src/pages/about/about.component';
 import { AccountComponent } from 'src/pages/account/account.component';
 import { EditAccountComponent } from 'src/pages/account/edit-account/edit-account.component';
 import { BrowseComponent } from 'src/pages/browse/browse.component';
@@ -43,6 +44,10 @@ const routes: Routes = [
   {
     path: 'signup',
     component: SignUpComponent,
+  },
+  {
+    path: 'about',
+    component: AboutComponent,
   },
   {
     path: 'post/:id',

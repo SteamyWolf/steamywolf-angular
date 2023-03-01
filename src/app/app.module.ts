@@ -33,6 +33,8 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatRadioModule } from '@angular/material/radio';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import { FooterComponent } from 'src/components/footer/footer.component';
+import { AboutComponent } from 'src/pages/about/about.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +51,8 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
     ForgotPasswordComponent,
     ResetPasswordComponent,
     EditAccountComponent,
+    FooterComponent,
+    AboutComponent,
   ],
   imports: [
     BrowserModule,

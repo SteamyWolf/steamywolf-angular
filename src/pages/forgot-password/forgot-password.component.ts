@@ -19,7 +19,7 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.forgotPasswordForm = new FormGroup({
-      email: new FormControl('', Validators.required),
+      email: new FormControl('', [Validators.required, Validators.email]),
     });
   }
 
@@ -28,12 +28,13 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
   }
 
   submitForm() {
+    this._matSnack.open('Loading...', 'X', {
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
+      panelClass: 'neutral-snack'
+    });
     this.susbscriptions.push(
-      this.authService
-        .forgotUserPasswordRequest(
-          this.forgotPasswordForm.controls['email'].value
-        )
-        .subscribe({
+      this.authService.forgotUserPasswordRequest(this.forgotPasswordForm.controls['email'].value).subscribe({
           next: (value: any) => {
             console.log(value);
             this.forgotPasswordForm.reset();
@@ -46,17 +47,29 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
           },
           error: (error) => {
             console.error(error);
-            this._matSnack.open(
-              'Email does not exist in the database. Please try again',
-              'X',
-              {
+            if (error.error.message === "Error trying to send password request email") {
+              this._matSnack.open('Issue sending over the email. Contact the site admin if this continues.', 'X', {
                 horizontalPosition: 'center',
                 verticalPosition: 'top',
                 panelClass: 'error-snack',
                 duration: 5000,
-              }
-            );
+              })
+            } else {
+              this._matSnack.open(
+                'Email does not exist in the database. Please try again',
+                'X',
+                {
+                  horizontalPosition: 'center',
+                  verticalPosition: 'top',
+                  panelClass: 'error-snack',
+                  duration: 5000,
+                }
+              );
+            }
           },
+          complete: () => {
+            console.log('When is this being called?')
+          }
         })
     );
   }

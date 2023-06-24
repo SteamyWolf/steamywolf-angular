@@ -19,7 +19,7 @@ interface User {
   styleUrls: ['./account.component.scss'],
 })
 export class AccountComponent implements OnInit, OnDestroy {
-  user: User;
+  user: User | null;
   alteredUserPosts: any[] = [];
   allUserPosts: any[] = [];
   seeAllPostsOpened: boolean = false;

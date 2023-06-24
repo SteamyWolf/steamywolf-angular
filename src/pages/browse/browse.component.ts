@@ -22,12 +22,15 @@ export class BrowseComponent implements OnInit, OnDestroy {
   query: string = '';
   currentUser: any;
   subscriptions: Subscription[] = [];
+
+  startIndex: number = 0;
+  pageSize: number = 10;
   @ViewChild('paginator') paginator: MatPaginator;
   constructor(
     private authService: AuthService,
     private router: Router,
     private route: ActivatedRoute
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.subscriptions.push(
@@ -43,6 +46,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
                 )
                 .subscribe(
                   (count: any) => {
+                    console.log(count)
                     this.submissions = +count;
                   },
                   (err) => {
@@ -54,8 +58,8 @@ export class BrowseComponent implements OnInit, OnDestroy {
             this.subscriptions.push(
               this.authService
                 .getPageRequestedSubmissions(
-                  0,
-                  10,
+                  this.startIndex,
+                  this.pageSize,
                   this.currentUser?.nsfw_checked || false
                 )
                 .subscribe(
@@ -79,7 +83,6 @@ export class BrowseComponent implements OnInit, OnDestroy {
                 )
                 .subscribe({
                   next: (value) => {
-                    console.log(value);
                     this.submissions = +value;
                   },
                   error: (error) => {
@@ -92,13 +95,12 @@ export class BrowseComponent implements OnInit, OnDestroy {
               this.authService
                 .getSearchQueryRequestedSubmissions(
                   this.route.snapshot.params['query'],
-                  0,
-                  10,
+                  this.startIndex,
+                  this.pageSize,
                   this.currentUser?.nsfw_checked || false
                 )
                 .subscribe({
                   next: (value: any) => {
-                    console.log(value);
                     this.pageSlice = value;
                   },
                   error: (error) => {
@@ -133,6 +135,8 @@ export class BrowseComponent implements OnInit, OnDestroy {
 
   onPageChange(event: PageEvent) {
     const startIndex = event.pageIndex * event.pageSize;
+    this.startIndex = startIndex;
+    this.pageSize = event.pageSize;
 
     if (!this.hasQuery) {
       this.subscriptions.push(

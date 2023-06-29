@@ -35,14 +35,22 @@ export class AccountComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.authService.currentUser.subscribe({
         next: (value: any) => {
-          console.log(value);
           if (value) {
+            this.user = value;
             this.alteredUserPosts = value?.posts?.slice(0, 4);
             this.allUserPosts = value?.posts;
 
-            this.alteredUserFavorites = value?.favorites.slice(0, 4);
-            this.allUserFavorites = value?.favorites;
-            this.user = value;
+            const posts = value.favorites.map(async (favorite: any) => {
+              const favoritePostUser: any = await this.authService.getUserOfFavoritePost(favorite.userId);
+              return {
+                favorite,
+                favoritePostUser: favoritePostUser.foundUser
+              }
+            });
+            Promise.all(posts).then((allPosts: any) => {
+              this.allUserFavorites = allPosts;
+              this.alteredUserFavorites = this.allUserFavorites.slice(0, 4);
+            })
           }
         },
         error: (error: any) => {

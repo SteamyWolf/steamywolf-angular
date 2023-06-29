@@ -59,18 +59,29 @@
   </div>
   <div class="comments-section">
     <h1 class="comments-header-title">Comments</h1>
-    <div
-      class="comment-information-container"
-      *ngFor="let comment of post.comments"
-    >
-      <p class="comment-createdAt">
-        <i> commented on {{ comment.comment.createdAt | date }} </i>
-      </p>
-      <img class="user-thumbnail" [src]="comment.user.thumbnail" />
-      <div class="username-comment-container">
-        <h2 class="username">{{ comment.user.username }}</h2>
-        <p class="user-comment">{{ comment.comment.text }}</p>
+
+
+    <ng-container *ngIf="post.comments?.length; else noComments">
+      <div class="comment-information-container" *ngFor="let comment of post.comments; let i = index">
+        <p class="comment-createdAt">
+          <i> commented on {{ comment.comment.createdAt | date }} </i>
+        </p>
+        <div class="comment-information-container__icons" *ngIf="userOwnsComment(comment)">
+            <mat-icon (click)="editComment(comment, i)">edit</mat-icon>
+            <mat-icon (click)="deleteComment(comment)">delete</mat-icon>
+        </div>
+        <img class="user-thumbnail" [src]="comment.user.thumbnail ? comment.user.thumbnail : '/assets/placeholder.jpg'" />
+        <div class="username-comment-container">
+          <h2 class="username">{{ comment.user.username }}</h2>
+          <p *ngIf="!comment.comment.editing" class="user-comment">{{ comment.comment.text }}jhhgvhgv</p>
+          <textarea *ngIf="comment.comment.editing" matInput rows="3" type="text" [value]="comment.comment.text"></textarea>
+        </div>
       </div>
-    </div>
+    </ng-container>
+    <ng-template #noComments>
+      There are no comments yet.
+    </ng-template>
+
+
   </div>
 </div>

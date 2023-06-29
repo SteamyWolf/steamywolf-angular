@@ -43,7 +43,7 @@ export class LoginComponent implements OnInit, OnDestroy {
             console.log(data);
             if (data.login) {
               this._snackBar.open(
-                `Success! You are now logged in as ${this.loginForm.value.username}`,
+                `Success! Welcome ${this.loginForm.value.username}`,
                 'X',
                 {
                   horizontalPosition: 'center',

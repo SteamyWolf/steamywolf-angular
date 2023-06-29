@@ -167,4 +167,8 @@ export class AuthService {
       { withCredentials: true }
     );
   }
+
+  getUserOfFavoritePost(userId: number) {
+    return this.http.get(`http://localhost:4000/api/user/userId/${userId}`).toPromise();
+  }
 }

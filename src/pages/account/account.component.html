@@ -51,17 +51,12 @@
         <figure *ngFor="let favorite of alteredUserFavorites">
           <div
             class="image-title-container"
-            (click)="postNavigate(favorite.id)"
+            (click)="postNavigate(favorite.favorite?.id)"
           >
-            <img loading="lazy" [src]="favorite.image" />
-            <p class="image-title">{{ favorite.title }}</p>
+            <img loading="lazy" [src]="favorite.favorite?.image" />
+            <p class="image-title">{{ favorite.favorite?.title }}</p>
           </div>
-          <p>
-            By
-            <a
-              ><i>{{ user?.username }}</i></a
-            >
-          </p>
+          <p>By <a><i>{{ favorite.favoritePostUser?.username }}</i></a></p>
         </figure>
       </div>
       <div class="empty-length" *ngIf="!alteredUserFavorites.length">

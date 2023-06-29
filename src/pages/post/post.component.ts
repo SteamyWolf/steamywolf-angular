@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/services/auth.service';
@@ -18,6 +18,7 @@ export interface ImageDialogData {
 export class PostComponent implements OnInit, OnDestroy {
   post: any = {};
   user: any = {};
+  loggedInUser: any = {};
   comment: string;
   userLoggedIn: boolean = false;
   hasBeenAddedToFavorites: boolean = false;
@@ -26,7 +27,8 @@ export class PostComponent implements OnInit, OnDestroy {
     private router: Router,
     private authService: AuthService,
     private _snackBar: MatSnackBar,
-    public dialog: MatDialog
+    private changeDetection: ChangeDetectorRef,
+    public dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
@@ -34,7 +36,9 @@ export class PostComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.authService.getPost(postId).subscribe(
         (response: any) => {
-          console.log(response);
+          response.response.foundPost.comments.forEach((comment: any) => {
+            comment.comment.editing = false;
+          })
           this.post = response.response.foundPost;
           this.user = response.response.userFound;
         },
@@ -57,6 +61,7 @@ export class PostComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.authService.currentUser.subscribe({
         next: (value: any) => {
+          this.loggedInUser = value;
           if (value) {
             this.userLoggedIn = true;
             const postInFavorites = value.favorites.find(
@@ -187,5 +192,25 @@ export class PostComponent implements OnInit, OnDestroy {
       data: { source: this.post.image },
       panelClass: 'image-screen-dialog',
     });
+  }
+
+  userOwnsComment(comment: any): boolean {
+    if (this.loggedInUser?.comments?.find((userComment: any) => userComment.id === comment.comment.id)) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  editComment(comment: any, index: number) {
+    // console.log(this.post.comments)
+    // let alteredPostComment = this.post.comments.find((postComment: any) => postComment.id === comment.id);
+    // alteredPostComment.comment.editing = true;
+    this.post.comments[index].comment.editing = true;
+    this.changeDetection.detectChanges();
+  }
+
+  deleteComment(comment: any) {
+    
   }
 }

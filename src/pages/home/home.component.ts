@@ -35,32 +35,28 @@ export class HomeComponent implements OnInit, OnDestroy {
       this.authService.currentUser.subscribe({
         next: (currentUser: any) => {
           this.subscriptions.push(
-            this.authService
-              .getRecentSubmissions(currentUser?.nsfw_checked || false)
-              .subscribe(
-                (data: any) => {
+            this.authService.getRecentSubmissions(currentUser?.nsfw_checked || false).subscribe((data: any) => {
+                  console.log(data);
                   data.forEach((submission: any) => {
                     submission.post.submissions.imageLoaded = false;
                   });
-                  console.log(data);
                   this.recentSubmissions = data;
-                },
-                (error) => {
-                  console.log(error);
-                  this._snackBar.open(
-                    'There was an error fetching the posts. Please try again',
-                    'X',
-                    {
-                      horizontalPosition: 'center',
-                      verticalPosition: 'top',
-                      panelClass: 'error-snack',
-                      duration: 7000,
-                    }
+                }, (error) => {
+                    console.log(error);
+                    this._snackBar.open('There was an error fetching the posts. Please try again','X',
+                      {
+                        horizontalPosition: 'center',
+                        verticalPosition: 'top',
+                        panelClass: 'error-snack',
+                        duration: 7000,
+                      }
                   );
                 }
               )
           );
-        },
+        }, error: (err) => {
+          console.error(err);
+        }
       })
     );
   }
@@ -70,7 +66,6 @@ export class HomeComponent implements OnInit, OnDestroy {
   }
 
   imageFinishedLoading(submission: any) {
-    console.log('image finished loading');
     submission.imageLoaded = true;
   }
 

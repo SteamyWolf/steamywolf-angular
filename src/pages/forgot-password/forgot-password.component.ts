@@ -36,7 +36,6 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
     this.susbscriptions.push(
       this.authService.forgotUserPasswordRequest(this.forgotPasswordForm.controls['email'].value).subscribe({
           next: (value: any) => {
-            console.log(value);
             this.forgotPasswordForm.reset();
             this._matSnack.open(value.message, 'X', {
               horizontalPosition: 'center',

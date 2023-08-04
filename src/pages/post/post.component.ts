@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/services/auth.service';
@@ -17,6 +17,7 @@ export interface ImageDialogData {
 })
 export class PostComponent implements OnInit, OnDestroy {
   post: any = {};
+  postCopy: any = {};
   user: any = {};
   loggedInUser: any = {};
   comment: string;
@@ -27,7 +28,6 @@ export class PostComponent implements OnInit, OnDestroy {
     private router: Router,
     private authService: AuthService,
     private _snackBar: MatSnackBar,
-    private changeDetection: ChangeDetectorRef,
     public dialog: MatDialog,
   ) {}
 
@@ -40,6 +40,7 @@ export class PostComponent implements OnInit, OnDestroy {
             comment.comment.editing = false;
           })
           this.post = response.response.foundPost;
+          this.postCopy = structuredClone(this.post);
           this.user = response.response.userFound;
         },
         (err) => {
@@ -64,10 +65,7 @@ export class PostComponent implements OnInit, OnDestroy {
           this.loggedInUser = value;
           if (value) {
             this.userLoggedIn = true;
-            const postInFavorites = value.favorites.find(
-              (favorite: any) =>
-                +favorite.id === parseInt(this.router.url.split('/')[2])
-            );
+            const postInFavorites = value.favorites.find((favorite: any) => +favorite.id === parseInt(this.router.url.split('/')[2]));
             if (postInFavorites?.id) {
               this.hasBeenAddedToFavorites = true;
             }
@@ -130,7 +128,6 @@ export class PostComponent implements OnInit, OnDestroy {
           .removeFavoritedPost(parseInt(this.router.url.split('/')[2]))
           .subscribe({
             next: (value: any) => {
-              console.log(value);
               this.hasBeenAddedToFavorites = false;
               this.authService.currentUser.next(value.removedFavoriteUser);
               this._snackBar.open('Successfully removed from favorites', 'X', {
@@ -202,15 +199,63 @@ export class PostComponent implements OnInit, OnDestroy {
     }
   }
 
-  editComment(comment: any, index: number) {
-    // console.log(this.post.comments)
-    // let alteredPostComment = this.post.comments.find((postComment: any) => postComment.id === comment.id);
-    // alteredPostComment.comment.editing = true;
-    this.post.comments[index].comment.editing = true;
-    this.changeDetection.detectChanges();
+  userOwnsPost() {
+    if (this.loggedInUser?.posts?.find((post: any) => post.id === parseInt(this.router.url.split('/')[2]))) {
+      return true;
+    } else {
+      return false;
+    }
   }
 
-  deleteComment(comment: any) {
-    
+  deletePost() {
+    const confirmation = confirm('Are you sure you want to delete this post? It\'ll be gone forever.');
+    if (confirmation) {
+      console.log('success');
+      this.authService.deletePost(this.post.id).subscribe((response) => {
+        console.log(response);
+        this._snackBar.open('Deleted Successfully', 'X', {
+          horizontalPosition: 'center',
+          verticalPosition: 'top',
+          panelClass: 'successful-snack',
+          duration: 1000
+        });
+        this.router.navigate(['account']);
+      })
+    } else {
+      console.log('does not want to delete');
+    }
+  }
+
+  editComment(index: number) {
+    this.post.comments[index].comment.editing = true;
+  }
+
+  deleteComment(comment: any, index: number) {
+    this.post.comments.splice(index, 1);
+    this.authService.deleteComment(comment).subscribe((deletedComment: any) => {
+      this._snackBar.open('Deleted Successfully', 'X', {
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+        panelClass: 'successful-snack',
+        duration: 1000
+      })
+    })
+  }
+
+  saveComment(comment: any, index: number) {
+    this.post.comments[index].comment.editing = false;
+    this.authService.saveEditedComment(comment).subscribe((updatedComment: any) => {
+      this._snackBar.open('Saved', 'X', {
+        horizontalPosition: 'center',
+        verticalPosition: 'top',
+        panelClass: 'successful-snack',
+        duration: 1000
+      })
+    });
+  }
+
+  cancelCommentEditing(index: number) {
+    this.post.comments[index].comment.text = this.postCopy.comments[index].comment.text;
+    this.post.comments[index].comment.editing = false;
   }
 }

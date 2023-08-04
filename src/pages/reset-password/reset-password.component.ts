@@ -38,7 +38,6 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
         .resetUserPasswordVerification(params['id'], params['token'])
         .subscribe({
           next: (value) => {
-            console.log(value);
             this.tokenValid = true;
           },
           error: (error) => {
@@ -87,7 +86,6 @@ export class ResetPasswordComponent implements OnInit, OnDestroy {
         )
         .subscribe({
           next: (value) => {
-            console.log(value);
             this.router.navigate(['/login']);
             this._matSnack.open(
               'Successfully updated password. Go ahead and login',

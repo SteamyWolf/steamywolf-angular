@@ -46,7 +46,6 @@ export class BrowseComponent implements OnInit, OnDestroy {
                 )
                 .subscribe(
                   (count: any) => {
-                    console.log(count)
                     this.submissions = +count;
                   },
                   (err) => {
@@ -101,7 +100,6 @@ export class BrowseComponent implements OnInit, OnDestroy {
                 )
                 .subscribe({
                   next: (value: any) => {
-                    console.log(value);
                     this.pageSlice = value;
                   },
                   error: (error) => {

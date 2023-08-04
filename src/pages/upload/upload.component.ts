@@ -41,7 +41,6 @@ export class UploadComponent implements OnInit {
 
   add(event: MatChipInputEvent): void {
     const value = (event.value || '').trim();
-    console.log(this.form.controls['tags'].errors);
 
     // Add our tag
     if (value) {
@@ -55,8 +54,6 @@ export class UploadComponent implements OnInit {
 
   remove(tag: string): void {
     const index = this.form.controls['tags'].value.indexOf(tag);
-    console.log(index);
-
     if (index >= 0) {
       const tags = [...this.form.controls['tags'].value];
       tags.splice(index, 1);
@@ -79,17 +76,17 @@ export class UploadComponent implements OnInit {
           (data: any) => {
             this.loading = false;
             this.form.controls['title'].reset(),
-          this.form.controls['description'].reset(), // prettier-ignore
-          this.selectedFile = ''; //prettier-ignore
-            console.log(data);
+            this.form.controls['description'].reset(), // prettier-ignore
+            this.selectedFile = ''; //prettier-ignore
             if (data.message === 'Successfully uploaded image') {
               // add snackbar from material
-              this._snackBar.open('Successfully uploaded post!', 'X', {
+              this._snackBar.open('Successfully uploaded post! It may take a minute or two to see it in your account page.', 'X', {
                 horizontalPosition: 'center',
                 verticalPosition: 'top',
                 panelClass: 'successful-snack',
                 duration: 5000,
               });
+              this.router.navigate(['post', data.newPost.id]);
             }
           },
           (err) => {
@@ -164,10 +161,8 @@ export class UploadComponent implements OnInit {
   checkFileType(file: File | any) {
     let reducedFile: File;
     if (file?.target?.files.length) {
-      console.log('file added', file.target.files[0]);
       reducedFile = file.target.files[0];
     } else {
-      console.log('fileDropped', file);
       reducedFile = file;
     }
 

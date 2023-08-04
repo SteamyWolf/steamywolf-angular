@@ -40,7 +40,6 @@ export class LoginComponent implements OnInit, OnDestroy {
         })
         .subscribe(
           (data: any) => {
-            console.log(data);
             if (data.login) {
               this._snackBar.open(
                 `Success! Welcome ${this.loginForm.value.username}`,

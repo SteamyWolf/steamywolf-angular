@@ -37,7 +37,7 @@ export class AccountComponent implements OnInit, OnDestroy {
         next: (value: any) => {
           if (value) {
             this.user = value;
-            this.alteredUserPosts = value?.posts?.slice(0, 4);
+            this.alteredUserPosts = value?.posts?.slice(0, 10);
             this.allUserPosts = value?.posts;
 
             const posts = value.favorites.map(async (favorite: any) => {
@@ -49,7 +49,7 @@ export class AccountComponent implements OnInit, OnDestroy {
             });
             Promise.all(posts).then((allPosts: any) => {
               this.allUserFavorites = allPosts;
-              this.alteredUserFavorites = this.allUserFavorites.slice(0, 4);
+              this.alteredUserFavorites = this.allUserFavorites.slice(0, 10);
             })
           }
         },
@@ -71,7 +71,7 @@ export class AccountComponent implements OnInit, OnDestroy {
         this.alteredUserPosts = this.allUserPosts;
       } else {
         this.seeAllPostsOpened = false;
-        this.alteredUserPosts = this.allUserPosts.slice(0, 4);
+        this.alteredUserPosts = this.allUserPosts.slice(0, 10);
       }
     }
     if (type === 'favorites') {
@@ -80,7 +80,7 @@ export class AccountComponent implements OnInit, OnDestroy {
         this.alteredUserFavorites = this.allUserFavorites;
       } else {
         this.seeAllFavoritesOpened = false;
-        this.alteredUserFavorites = this.allUserFavorites.slice(0, 4);
+        this.alteredUserFavorites = this.allUserFavorites.slice(0, 10);
       }
     }
   }

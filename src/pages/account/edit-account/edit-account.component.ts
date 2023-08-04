@@ -84,7 +84,6 @@ export class EditAccountComponent implements OnInit, OnDestroy {
           next: (value: any) => {
             this.loading = false;
             this.user.thumbnail = value.thumbnail;
-            console.log(this.fileInput);
             this.fileInput.nativeElement.value = '';
             this.userAddedAnImage = false;
             this.matSnack.open('Successfully updated account image', 'X', {

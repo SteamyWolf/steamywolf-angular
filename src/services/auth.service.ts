@@ -171,4 +171,16 @@ export class AuthService {
   getUserOfFavoritePost(userId: number) {
     return this.http.get(`http://localhost:4000/api/user/userId/${userId}`).toPromise();
   }
+
+  saveEditedComment(comment: any) {
+    return this.http.post('http://localhost:4000/api/comment/update', comment);
+  }
+
+  deleteComment(comment: any) {
+    return this.http.delete(`http://localhost:4000/api/comment/delete/${comment.comment.id}`);
+  }
+
+  deletePost(postId: number) {
+    return this.http.delete(`http://localhost:4000/api/post/${postId}`);
+  }
 }

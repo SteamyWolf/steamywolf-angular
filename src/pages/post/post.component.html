@@ -12,14 +12,12 @@
         </mat-chip-list>
       </div>
       <div class="favorite-container" *ngIf="userLoggedIn">
-        <mat-icon class="favorites-icon" (click)="addRemoveFavorite()">{{
-          hasBeenAddedToFavorites ? "star" : "star_outline"
-        }}</mat-icon>
-        <p class="secondary-text">
-          {{
-            hasBeenAddedToFavorites ? "Added to Favorites" : "Add to Favorites"
-          }}
-        </p>
+        <mat-icon class="favorites-icon" (click)="addRemoveFavorite()">{{hasBeenAddedToFavorites ? "star" : "star_outline"}}</mat-icon>
+        <p class="secondary-text">{{hasBeenAddedToFavorites ? "Added to Favorites" : "Add to Favorites"}}</p>
+      </div>
+      <div class="delete-container" *ngIf="userOwnsPost()" (click)="deletePost()">
+        <mat-icon class="delete-post-icon">delete</mat-icon>
+        <p class="secondary-text delete-post-copy">Delete Post</p>
       </div>
     </div>
   </div>
@@ -67,19 +65,21 @@
           <i> commented on {{ comment.comment.createdAt | date }} </i>
         </p>
         <div class="comment-information-container__icons" *ngIf="userOwnsComment(comment)">
-            <mat-icon (click)="editComment(comment, i)">edit</mat-icon>
-            <mat-icon (click)="deleteComment(comment)">delete</mat-icon>
+            <mat-icon *ngIf="!comment.comment.editing" (click)="editComment(i)">edit</mat-icon>
+            <mat-icon *ngIf="comment.comment.editing" (click)="saveComment(comment, i)">save</mat-icon>
+            <mat-icon *ngIf="comment.comment.editing" (click)="cancelCommentEditing(i)">cancel</mat-icon>
+            <mat-icon (click)="deleteComment(comment, i)">delete</mat-icon>
         </div>
         <img class="user-thumbnail" [src]="comment.user.thumbnail ? comment.user.thumbnail : '/assets/placeholder.jpg'" />
         <div class="username-comment-container">
           <h2 class="username">{{ comment.user.username }}</h2>
-          <p *ngIf="!comment.comment.editing" class="user-comment">{{ comment.comment.text }}jhhgvhgv</p>
-          <textarea *ngIf="comment.comment.editing" matInput rows="3" type="text" [value]="comment.comment.text"></textarea>
+          <p *ngIf="!comment.comment.editing" class="user-comment">{{ comment.comment.text }}</p>
+          <textarea *ngIf="comment.comment.editing" class="edit-comment-textarea" matInput rows="3" type="text" [(ngModel)]="comment.comment.text"></textarea>
         </div>
       </div>
     </ng-container>
     <ng-template #noComments>
-      There are no comments yet.
+      <p class="no-comments">There are no comments yet.</p>
     </ng-template>
 
 

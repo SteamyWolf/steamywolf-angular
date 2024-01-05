@@ -1,3 +1,4 @@
+import { Location } from '@angular/common';
 import {
   Component,
   HostListener,
@@ -25,14 +26,20 @@ export class BrowseComponent implements OnInit, OnDestroy {
 
   startIndex: number = 0;
   pageSize: number = 10;
+  pageIndex: number = 0;
   @ViewChild('paginator') paginator: MatPaginator;
   constructor(
     private authService: AuthService,
     private router: Router,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private location: Location
   ) { }
 
   ngOnInit(): void {
+    this.startIndex = +this.route.snapshot.params['startIndex'];
+    this.pageSize = +this.route.snapshot.params['pageSize'];
+    this.pageIndex = +this.route.snapshot.params['pageIndex'];
+    
     this.subscriptions.push(
       this.authService.currentUser.subscribe({
         next: (value: any) => {
@@ -136,6 +143,9 @@ export class BrowseComponent implements OnInit, OnDestroy {
     const startIndex = event.pageIndex * event.pageSize;
     this.startIndex = startIndex;
     this.pageSize = event.pageSize;
+    this.pageIndex = event.pageIndex;
+
+    this.location.go(`/browse/${this.startIndex}/${this.pageSize}/${event.pageIndex}`);
 
     if (!this.hasQuery) {
       this.subscriptions.push(

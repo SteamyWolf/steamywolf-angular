@@ -19,8 +19,9 @@ const routes: Routes = [
     component: BrowseComponent,
   },
   {
-    path: 'browse',
+    path: 'browse/:startIndex/:pageSize/:pageIndex',
     component: BrowseComponent,
+    pathMatch: 'full'
   },
   {
     path: 'account',

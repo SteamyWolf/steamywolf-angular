@@ -19,6 +19,7 @@ export class UploadComponent implements OnInit {
   readonly separatorKeysCodes = [ENTER, COMMA] as const;
   addOnBlur: boolean = true;
   subscriptions: Subscription[] = [];
+  user: any;
 
   constructor(
     private authService: AuthService,
@@ -37,6 +38,8 @@ export class UploadComponent implements OnInit {
       tags: new FormControl([], Validators.maxLength(20)),
       nsfw: new FormControl('', Validators.required),
     });
+
+    this.authService.currentUser.subscribe(user => this.user = user);
   }
 
   add(event: MatChipInputEvent): void {
@@ -64,20 +67,16 @@ export class UploadComponent implements OnInit {
   upload() {
     this.loading = true;
     this.subscriptions.push(
-      this.authService
-        .upload(
-          this.selectedFile,
-          this.form.controls['title'].value.trim(),
-          this.form.controls['description'].value,
-          this.form.controls['tags'].value,
-          this.form.controls['nsfw'].value
-        )
-        .subscribe(
-          (data: any) => {
+      this.authService.upload(this.selectedFile, this.form.controls['title'].value.trim(), this.form.controls['description'].value.trim(), this.form.controls['tags'].value, this.form.controls['nsfw'].value).subscribe((data: any) => {
             this.loading = false;
             this.form.controls['title'].reset(),
-            this.form.controls['description'].reset(), // prettier-ignore
-            this.selectedFile = ''; //prettier-ignore
+            this.form.controls['description'].reset(),
+            this.selectedFile = '';
+
+            this.user.posts.push(data.newPost);
+            this.authService.currentUser.next(this.user);
+
+
             if (data.message === 'Successfully uploaded image') {
               // add snackbar from material
               this._snackBar.open('Successfully uploaded post! It may take a minute or two to see it in your account page.', 'X', {

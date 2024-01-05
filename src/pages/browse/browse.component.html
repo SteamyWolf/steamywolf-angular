@@ -4,8 +4,9 @@
   <mat-paginator
     #paginator
     [length]="submissions"
-    [pageSize]="10"
+    [pageSize]="pageSize"
     [pageSizeOptions]="[5, 10, 20]"
+    [pageIndex]="pageIndex"
     (page)="onPageChange($event)"
   ></mat-paginator>
   <div class="gallery-container" *ngIf="!hasQuery">

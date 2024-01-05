@@ -180,7 +180,7 @@ export class AuthService {
     return this.http.delete(`http://localhost:4000/api/comment/delete/${comment.comment.id}`);
   }
 
-  deletePost(postId: number) {
-    return this.http.delete(`http://localhost:4000/api/post/${postId}`);
+  deletePost(postId: number, public_id: string) {
+    return this.http.delete(`http://localhost:4000/api/post/${postId}/${public_id}`);
   }
 }

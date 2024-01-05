@@ -209,10 +209,17 @@ export class PostComponent implements OnInit, OnDestroy {
 
   deletePost() {
     const confirmation = confirm('Are you sure you want to delete this post? It\'ll be gone forever.');
+    console.log(this.post.image.split('/')[7].split('.')[0]);
+    console.log(this.user);
     if (confirmation) {
       console.log('success');
-      this.authService.deletePost(this.post.id).subscribe((response) => {
+      let public_id = this.post.image.split('/')[7].split('.')[0];
+      this.authService.deletePost(this.post.id, public_id).subscribe((response: any) => {
         console.log(response);
+        let index = this.user.posts.findIndex((post: any) => post.id === response.deletedPost.id);
+        this.user.posts.splice(index, 1);
+        this.authService.currentUser.next(this.user);
+
         this._snackBar.open('Deleted Successfully', 'X', {
           horizontalPosition: 'center',
           verticalPosition: 'top',

@@ -37,8 +37,8 @@ export class AccountComponent implements OnInit, OnDestroy {
         next: (value: any) => {
           if (value) {
             this.user = value;
-            this.alteredUserPosts = value?.posts?.slice(0, 10);
-            this.allUserPosts = value?.posts;
+            this.alteredUserPosts = value?.posts?.slice(0, 10).reverse();
+            this.allUserPosts = value?.posts.reverse();
 
             const posts = value.favorites.map(async (favorite: any) => {
               const favoritePostUser: any = await this.authService.getUserOfFavoritePost(favorite.userId);
@@ -48,8 +48,8 @@ export class AccountComponent implements OnInit, OnDestroy {
               }
             });
             Promise.all(posts).then((allPosts: any) => {
-              this.allUserFavorites = allPosts;
-              this.alteredUserFavorites = this.allUserFavorites.slice(0, 10);
+              this.allUserFavorites = allPosts.reverse();
+              this.alteredUserFavorites = this.allUserFavorites.slice(0, 10).reverse();
             })
           }
         },

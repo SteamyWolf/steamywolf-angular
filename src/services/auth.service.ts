@@ -2,6 +2,8 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
+import { environment } from 'src/environments/environment';
+
 interface User {
   username: String;
   password: String;
@@ -16,50 +18,50 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   login(user: User) {
-    return this.http.post('http://localhost:4000/api/auth/login', user, {
+    return this.http.post(`${environment.apiUrl}/auth/login`, user, {
       withCredentials: true,
     });
   }
 
   logout() {
-    return this.http.get('http://localhost:4000/api/auth/logout', {
+    return this.http.get(`${environment.apiUrl}/auth/logout`, {
       withCredentials: true,
     });
   }
 
   loggedInStatus() {
     return this.http
-      .get('http://localhost:4000/api/auth/status', { withCredentials: true })
+      .get(`${environment.apiUrl}/auth/status`, { withCredentials: true })
       .toPromise();
   }
 
   getCurrentUser(id: number) {
-    return this.http.get(`http://localhost:4000/api/auth/current-user/${id}`);
+    return this.http.get(`${environment.apiUrl}/auth/current-user/${id}`);
   }
 
   signupNewUser(user: { username: string; email: string; password: string }) {
-    return this.http.post('http://localhost:4000/api/user', user);
+    return this.http.post(`${environment.apiUrl}/user`, user);
   }
 
   signupNewUserEmail(user: { username: string; email: string }) {
-    return this.http.post('http://localhost:4000/api/user/email', user);
+    return this.http.post(`${environment.apiUrl}/user/email`, user);
   }
 
   forgotUserPasswordRequest(email: string) {
-    return this.http.post('http://localhost:4000/api/user/forgot-password', {
+    return this.http.post(`${environment.apiUrl}/user/forgot-password`, {
       email,
     });
   }
 
   resetUserPasswordVerification(id: string, token: string) {
     return this.http.get(
-      `http://localhost:4000/api/user/reset-password/${id}/${token}`
+      `${environment.apiUrl}/user/reset-password/${id}/${token}`
     );
   }
 
   resetUserPassword(id: string, password: string) {
     return this.http.post(
-      'http://localhost:4000/api/user/reset-password-request',
+      `${environment.apiUrl}/user/reset-password-request`,
       { id, password }
     );
   }
@@ -72,7 +74,7 @@ export class AuthService {
     nsfw: string
   ) {
     return this.http.post(
-      'http://localhost:4000/api/upload',
+      `${environment.apiUrl}/upload`,
       {
         file: file,
         title: title,
@@ -86,19 +88,19 @@ export class AuthService {
 
   uploadNewUserThumbnail(file: string, public_id: string) {
     return this.http.post(
-      'http://localhost:4000/api/upload/thumbnail',
+      `${environment.apiUrl}/upload/thumbnail`,
       { file, public_id },
       { withCredentials: true }
     );
   }
 
   getRecentSubmissions(nsfw: boolean) {
-    return this.http.get(`http://localhost:4000/api/submissions/${nsfw}`);
+    return this.http.get(`${environment.apiUrl}/submissions/${nsfw}`);
   }
 
   getPageRequestedSubmissions(skip: number, take: number, nsfw: boolean) {
     return this.http.get(
-      `http://localhost:4000/api/submissions/browse/${skip}/${take}/${nsfw}`
+      `${environment.apiUrl}/submissions/browse/${skip}/${take}/${nsfw}`
     );
   }
 
@@ -109,27 +111,27 @@ export class AuthService {
     nsfw: boolean
   ) {
     return this.http.get(
-      `http://localhost:4000/api/post/search/${query}/${skip}/${take}/${nsfw}`
+      `${environment.apiUrl}/post/search/${query}/${skip}/${take}/${nsfw}`
     );
   }
 
   getCountOfAllSubmissions(nsfw: boolean) {
-    return this.http.get(`http://localhost:4000/api/submissions/count/${nsfw}`);
+    return this.http.get(`${environment.apiUrl}/submissions/count/${nsfw}`);
   }
 
   getCountOfSearchedQuery(query: string, nsfw: boolean) {
     return this.http.get(
-      `http://localhost:4000/api/post/search-count/${query}/${nsfw}`
+      `${environment.apiUrl}/post/search-count/${query}/${nsfw}`
     );
   }
 
   getPost(postId: number) {
-    return this.http.get(`http://localhost:4000/api/post/find/${postId}`);
+    return this.http.get(`${environment.apiUrl}/post/find/${postId}`);
   }
 
   postComment(postId: number, comment: string) {
     return this.http.post(
-      'http://localhost:4000/api/comment',
+      `${environment.apiUrl}/comment`,
       {
         postId,
         comment,
@@ -139,12 +141,12 @@ export class AuthService {
   }
 
   checkUsername(username: string) {
-    return this.http.get(`http://localhost:4000/api/auth/${username}`);
+    return this.http.get(`${environment.apiUrl}/auth/${username}`);
   }
 
   addNewFavoritePost(favoritePost: any) {
     return this.http.post(
-      'http://localhost:4000/api/post/add-favorite',
+      `${environment.apiUrl}/post/add-favorite`,
       {
         favoritePost,
       },
@@ -154,7 +156,7 @@ export class AuthService {
 
   removeFavoritedPost(postId: number) {
     return this.http.post(
-      'http://localhost:4000/api/post/remove-favorite',
+      `${environment.apiUrl}/post/remove-favorite`,
       { postId },
       { withCredentials: true }
     );
@@ -162,25 +164,25 @@ export class AuthService {
 
   updateNsfwChecked(nsfw: boolean) {
     return this.http.post(
-      'http://localhost:4000/api/user/nsfw',
+      `${environment.apiUrl}/user/nsfw`,
       { nsfw },
       { withCredentials: true }
     );
   }
 
   getUserOfFavoritePost(userId: number) {
-    return this.http.get(`http://localhost:4000/api/user/userId/${userId}`).toPromise();
+    return this.http.get(`${environment.apiUrl}/user/userId/${userId}`).toPromise();
   }
 
   saveEditedComment(comment: any) {
-    return this.http.post('http://localhost:4000/api/comment/update', comment);
+    return this.http.post(`${environment.apiUrl}/comment/update`, comment);
   }
 
   deleteComment(comment: any) {
-    return this.http.delete(`http://localhost:4000/api/comment/delete/${comment.comment.id}`);
+    return this.http.delete(`${environment.apiUrl}/comment/delete/${comment.comment.id}`);
   }
 
   deletePost(postId: number, public_id: string) {
-    return this.http.delete(`http://localhost:4000/api/post/${postId}/${public_id}`);
+    return this.http.delete(`${environment.apiUrl}/post/${postId}/${public_id}`);
   }
 }

@@ -39,7 +39,14 @@ export class BrowseComponent implements OnInit, OnDestroy {
     this.startIndex = +this.route.snapshot.params['startIndex'];
     this.pageSize = +this.route.snapshot.params['pageSize'];
     this.pageIndex = +this.route.snapshot.params['pageIndex'];
-    
+
+    if (this.startIndex === undefined || this.startIndex === null || Number.isNaN(this.startIndex)) {
+      this.startIndex = 0;
+    }
+    if (this.pageSize === undefined || this.pageSize === null || Number.isNaN(this.pageSize)) {
+      this.pageSize = 10;
+    }
+
     this.subscriptions.push(
       this.authService.currentUser.subscribe({
         next: (value: any) => {
@@ -47,10 +54,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
           if (!this.route.snapshot.params['query']) {
             this.hasQuery = false;
             this.subscriptions.push(
-              this.authService
-                .getCountOfAllSubmissions(
-                  this.currentUser?.nsfw_checked || false
-                )
+              this.authService.getCountOfAllSubmissions(this.currentUser?.nsfw_checked || false)
                 .subscribe(
                   (count: any) => {
                     this.submissions = +count;
@@ -62,12 +66,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
             );
 
             this.subscriptions.push(
-              this.authService
-                .getPageRequestedSubmissions(
-                  this.startIndex,
-                  this.pageSize,
-                  this.currentUser?.nsfw_checked || false
-                )
+              this.authService.getPageRequestedSubmissions(this.startIndex, this.pageSize, this.currentUser?.nsfw_checked || false)
                 .subscribe(
                   (data: any) => {
                     this.pageSlice = data;
@@ -82,11 +81,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
             this.hasQuery = true;
             this.query = this.route.snapshot.params['query'];
             this.subscriptions.push(
-              this.authService
-                .getCountOfSearchedQuery(
-                  this.route.snapshot.params['query'],
-                  this.currentUser?.nsfw_checked || false
-                )
+              this.authService.getCountOfSearchedQuery(this.route.snapshot.params['query'], this.currentUser?.nsfw_checked || false)
                 .subscribe({
                   next: (value) => {
                     this.submissions = +value;
@@ -98,13 +93,7 @@ export class BrowseComponent implements OnInit, OnDestroy {
             );
 
             this.subscriptions.push(
-              this.authService
-                .getSearchQueryRequestedSubmissions(
-                  this.route.snapshot.params['query'],
-                  this.startIndex,
-                  this.pageSize,
-                  this.currentUser?.nsfw_checked || false
-                )
+              this.authService.getSearchQueryRequestedSubmissions(this.route.snapshot.params['query'], this.startIndex, this.pageSize, this.currentUser?.nsfw_checked || false)
                 .subscribe({
                   next: (value: any) => {
                     this.pageSlice = value;

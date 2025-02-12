@@ -65,3 +65,52 @@ a[routerLink] {
   color: $secondary;
   padding: 4px 16px 0px;
 }
+
+.hamburger-icon {
+  display: none;
+}
+
+.hamburger-panel {
+  display: none;
+}
+
+@media only screen and (max-width: $viewport-medium-up) {
+  .links-container {
+    display: none;
+  }
+
+  .header-container {
+    padding: 6vw;
+    align-items: center;
+    position: relative;
+  }
+
+  .hamburger-icon {
+    display: block;
+    mat-icon {
+      font-size: 30px !important;
+      color: $secondary;
+      cursor: pointer;
+    }
+  }
+
+  .hamburger-panel {
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    width: 300px;
+    height: 360px;
+    margin: 0 auto;
+    background-color: $primary;
+    z-index: 1;
+    border-radius: 0 0 5px 5px;
+  }
+
+  .links-list {
+    flex-direction: column;
+    padding: 0;
+    gap: 10px;
+  }
+}

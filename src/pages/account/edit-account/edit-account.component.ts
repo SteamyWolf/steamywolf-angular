@@ -28,7 +28,7 @@ export class EditAccountComponent implements OnInit, OnDestroy {
   constructor(
     private authService: AuthService,
     private matSnack: MatSnackBar
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.subscriptions.push(
@@ -74,12 +74,13 @@ export class EditAccountComponent implements OnInit, OnDestroy {
 
   uploadAccountImage() {
     this.loading = true;
+    let public_id;
+    if (this.user.thumbnail) {
+      public_id = this.user.thumbnail.split('/')[7].split('.')[0];
+    }
     this.subscriptions.push(
       this.authService
-        .uploadNewUserThumbnail(
-          this.croppedImage!,
-          this.user.thumbnail.split('/')[7].split('.')[0]
-        )
+        .uploadNewUserThumbnail(this.croppedImage!, public_id ? public_id : null)
         .subscribe({
           next: (value: any) => {
             this.loading = false;

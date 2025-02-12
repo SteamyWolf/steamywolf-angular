@@ -92,9 +92,8 @@ export class SignUpComponent implements OnInit, AfterViewInit, OnDestroy {
                       password: this.signupForm.controls['password'].value,
                     };
                     this.subscriptions.push(
-                      this.authService
-                        .login(loginNewUser)
-                        .subscribe((response: any) => {
+                      this.authService.login(loginNewUser).subscribe(
+                        (response: any) => {
                           this._snackBar.open(
                             `Welcome ${user.username} to SteamyWolf!`,
                             'X',
@@ -107,22 +106,52 @@ export class SignUpComponent implements OnInit, AfterViewInit, OnDestroy {
                           );
                           this.authService.userLoggedInState.next(true);
                           this.router.navigate(['/']);
-                        })
+                        },
+                        (error) => {
+                          console.log(error);
+                          this._snackBar.open(
+                            'There was an issue with logging in. Please try again',
+                            'X',
+                            {
+                              horizontalPosition: 'center',
+                              verticalPosition: 'top',
+                              panelClass: 'error-snack',
+                              duration: 5000,
+                            }
+                          );
+                        }
+                      )
                     );
                   },
                   (error) => {
                     console.log(error);
                     this.createNewUserLoading = false;
-                    this._snackBar.open(
-                      'There was a server error when creating a new account. Please try again',
-                      'X',
-                      {
-                        horizontalPosition: 'center',
-                        verticalPosition: 'top',
-                        panelClass: 'error-snack',
-                        duration: 5000,
-                      }
-                    );
+                    if (
+                      error.error.message ===
+                      'Email already exists. Try logging in with that email instead'
+                    ) {
+                      this._snackBar.open(
+                        'Email already exists. Try logging in with that email instead',
+                        'X',
+                        {
+                          horizontalPosition: 'center',
+                          verticalPosition: 'top',
+                          panelClass: 'error-snack',
+                          duration: 5000,
+                        }
+                      );
+                    } else {
+                      this._snackBar.open(
+                        'There was a server error when creating a new account. Please try again',
+                        'X',
+                        {
+                          horizontalPosition: 'center',
+                          verticalPosition: 'top',
+                          panelClass: 'error-snack',
+                          duration: 5000,
+                        }
+                      );
+                    }
                   }
                 )
               );
@@ -142,16 +171,29 @@ export class SignUpComponent implements OnInit, AfterViewInit, OnDestroy {
           (error) => {
             console.log(error);
             this.usernameLoading = false;
-            this._snackBar.open(
-              'There was a server error when checking for unique username',
-              'X',
-              {
-                horizontalPosition: 'center',
-                verticalPosition: 'top',
-                panelClass: 'error-snack',
-                duration: 5000,
-              }
-            );
+            if (error.error.message === 'User already exists') {
+              this._snackBar.open(
+                'Username already exists. Try something new',
+                'X',
+                {
+                  horizontalPosition: 'center',
+                  verticalPosition: 'top',
+                  panelClass: 'error-snack',
+                  duration: 5000,
+                }
+              );
+            } else {
+              this._snackBar.open(
+                'There was a server error when checking for unique username',
+                'X',
+                {
+                  horizontalPosition: 'center',
+                  verticalPosition: 'top',
+                  panelClass: 'error-snack',
+                  duration: 5000,
+                }
+              );
+            }
           }
         )
     );

@@ -67,8 +67,8 @@ mat-icon {
   padding: 0;
 }
 
-.cdk-global-overlay-wrapper {
-  background-color: rgba(37, 96, 103, 0.8);
+.cdk-global-overlay-wrapper:has(> .image-screen-dialog) {
+  background-color: rgba(37, 96, 103, 0.8) !important;
 }
 
 .body-container {
@@ -115,4 +115,10 @@ $viewport-wide-screen: (
 
 .secondary-text {
   color: $secondary;
+}
+
+@media only screen and (max-width: $viewport-medium-up) {
+  // body {
+  //   padding: 6vw;
+  // }
 }

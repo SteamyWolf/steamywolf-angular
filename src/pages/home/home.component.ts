@@ -28,7 +28,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private router: Router,
     private _snackBar: MatSnackBar
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.subscriptions.push(
@@ -36,23 +36,22 @@ export class HomeComponent implements OnInit, OnDestroy {
         next: (currentUser: any) => {
           this.subscriptions.push(
             this.authService.getRecentSubmissions(currentUser?.nsfw_checked || false).subscribe((data: any) => {
-                  console.log(data);
-                  data.forEach((submission: any) => {
-                    submission.post.submissions.imageLoaded = false;
-                  });
-                  this.recentSubmissions = data;
-                }, (error) => {
-                    console.log(error);
-                    this._snackBar.open('There was an error fetching the posts. Please try again','X',
-                      {
-                        horizontalPosition: 'center',
-                        verticalPosition: 'top',
-                        panelClass: 'error-snack',
-                        duration: 7000,
-                      }
-                  );
+              data.forEach((submission: any) => {
+                submission.post.submissions.imageLoaded = false;
+              });
+              this.recentSubmissions = data;
+            }, (error) => {
+              console.log(error);
+              this._snackBar.open('There was an error fetching the posts. Please try again', 'X',
+                {
+                  horizontalPosition: 'center',
+                  verticalPosition: 'top',
+                  panelClass: 'error-snack',
+                  duration: 7000,
                 }
-              )
+              );
+            }
+            )
           );
         }, error: (err) => {
           console.error(err);

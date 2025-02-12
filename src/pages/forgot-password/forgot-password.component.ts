@@ -65,9 +65,6 @@ export class ForgotPasswordComponent implements OnInit, OnDestroy {
                 }
               );
             }
-          },
-          complete: () => {
-            console.log('When is this being called?')
           }
         })
     );

@@ -16,11 +16,12 @@ export class HeaderComponent implements OnInit, OnDestroy {
   searchForm: FormGroup;
   currentUser: any = {};
   subscriptions: Subscription[] = [];
+  isHamburgerOpen: boolean = false;
   constructor(
     private router: Router,
     private authService: AuthService,
     private _snackBar: MatSnackBar
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     this.subscriptions.push(
@@ -35,7 +36,6 @@ export class HeaderComponent implements OnInit, OnDestroy {
     this.subscriptions.push(
       this.authService.currentUser.subscribe({
         next: (value: any) => {
-          console.log(value);
           this.currentUser = value;
         },
         error: (error) => console.log(error),
@@ -72,18 +72,14 @@ export class HeaderComponent implements OnInit, OnDestroy {
   }
 
   search() {
-    if (this.router.url.includes('/browse/')) {
-      this.router.navigate(['/'], { skipLocationChange: true }).then(() => {
-        this.router.navigate([
-          'browse',
-          this.searchForm.controls['search'].value,
-        ]);
-      });
-    } else {
-      this.router.navigate([
-        'browse',
-        this.searchForm.controls['search'].value,
-      ]);
+    if (this.searchForm.controls['search'].value) {
+      if (this.router.url.includes('/browse/')) {
+        this.router.navigate(['/'], { skipLocationChange: true }).then(() => {
+          this.router.navigate(['browse', this.searchForm.controls['search'].value]);
+        });
+      } else {
+        this.router.navigate(['browse', this.searchForm.controls['search'].value,]);
+      }
     }
   }
 
@@ -96,5 +92,13 @@ export class HeaderComponent implements OnInit, OnDestroy {
         error: (error) => console.log(error),
       })
     );
+  }
+
+  hamburgerClick() {
+    if (!this.isHamburgerOpen) {
+      this.isHamburgerOpen = true;
+    } else {
+      this.isHamburgerOpen = false;
+    }
   }
 }

@@ -29,7 +29,7 @@ export class PostComponent implements OnInit, OnDestroy {
     private authService: AuthService,
     private _snackBar: MatSnackBar,
     public dialog: MatDialog,
-  ) {}
+  ) { }
 
   ngOnInit(): void {
     const postId = parseInt(this.router.url.split('/')[2]);
@@ -94,30 +94,32 @@ export class PostComponent implements OnInit, OnDestroy {
 
   submitComment() {
     this.subscriptions.push(
-      this.authService
-        .postComment(parseInt(this.post.id), this.comment)
-        .subscribe(
-          (response: any) => {
-            this.comment = '';
-            this.ngOnInit();
-          },
-          (error) => {
-            console.log(error);
-            if (error.error.message === 'Token does not exist or has expired') {
-              this._snackBar.open(
-                'Please sign in again. Your session has expired.',
-                'X',
-                {
-                  horizontalPosition: 'center',
-                  verticalPosition: 'top',
-                  panelClass: 'error-snack',
-                  duration: 5000,
-                }
-              );
-              this.router.navigate(['/login']);
-            }
+      this.authService.postComment(parseInt(this.post.id), this.comment).subscribe((response: any) => {
+        this.comment = '';
+        // this.ngOnInit();
+        // response.newComment.editing = true;
+        let newComment = { comment: response.newComment, user: this.loggedInUser };
+        this.post.comments.push(newComment);
+        this.loggedInUser.comments.push(newComment);
+        // this.userOwnsComment(newComment);
+      },
+        (error) => {
+          console.log(error);
+          if (error.error.message === 'Token does not exist or has expired') {
+            this._snackBar.open(
+              'Please sign in again. Your session has expired.',
+              'X',
+              {
+                horizontalPosition: 'center',
+                verticalPosition: 'top',
+                panelClass: 'error-snack',
+                duration: 5000,
+              }
+            );
+            this.router.navigate(['/login']);
           }
-        )
+        }
+      )
     );
   }
 
@@ -209,13 +211,9 @@ export class PostComponent implements OnInit, OnDestroy {
 
   deletePost() {
     const confirmation = confirm('Are you sure you want to delete this post? It\'ll be gone forever.');
-    console.log(this.post.image.split('/')[7].split('.')[0]);
-    console.log(this.user);
     if (confirmation) {
-      console.log('success');
       let public_id = this.post.image.split('/')[7].split('.')[0];
       this.authService.deletePost(this.post.id, public_id).subscribe((response: any) => {
-        console.log(response);
         let index = this.user.posts.findIndex((post: any) => post.id === response.deletedPost.id);
         this.user.posts.splice(index, 1);
         this.authService.currentUser.next(this.user);
@@ -228,8 +226,6 @@ export class PostComponent implements OnInit, OnDestroy {
         });
         this.router.navigate(['account']);
       })
-    } else {
-      console.log('does not want to delete');
     }
   }
 

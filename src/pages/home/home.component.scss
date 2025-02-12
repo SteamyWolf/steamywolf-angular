@@ -35,3 +35,9 @@
     color: $secondary;
   }
 }
+
+@media only screen and (max-width: $viewport-medium-up) {
+  .title {
+    text-align: center;
+  }
+}
